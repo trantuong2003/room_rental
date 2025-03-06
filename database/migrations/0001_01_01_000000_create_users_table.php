@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['customer', 'landlord', 'admin'])->default('customer');
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable(); // Cho renter
+            $table->string('government_id')->nullable(); // Cho landlord
+            $table->string('proof')->nullable(); // Cho landlord (lưu đường dẫn file)
             $table->rememberToken();
             $table->timestamps();
         });
