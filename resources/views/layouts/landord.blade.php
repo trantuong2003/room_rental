@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Renter</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/landord.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/landord.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/payment_history.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/landord.js') }}"></script>
 </head>
@@ -39,7 +40,7 @@
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
-                        <span class="title">Customers</span>
+                        <span class="title">Post</span>
                     </a>
                 </li>
 
@@ -53,7 +54,7 @@
                 </li>
 
                 <li>
-                    <a href="/subscription">
+                    <a href="/landlord/subscription">
                         <span class="icon">
                             <ion-icon name="help-outline"></ion-icon>
                         </span>
@@ -62,11 +63,11 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="/landlord/history">
                         <span class="icon">
                             <ion-icon name="settings-outline"></ion-icon>
                         </span>
-                        <span class="title">Settings</span>
+                        <span class="title">Payment history</span>
                     </a>
                 </li>
 

@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Subscription;
+use App\Models\SubscriptionPackage;
 
 class SubscriptionController extends Controller
 {
     public function index()
     {
-        $subscriptions = Subscription::All();
+        $subscriptions = SubscriptionPackage::All();
         return view('admin.subscription', compact('subscriptions'));
     }
 
@@ -24,13 +24,13 @@ class SubscriptionController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Subscription::create($request->all());
+        SubscriptionPackage::create($request->all());
         return redirect('/admin/subscription')->with('success', 'Subscription package created successfully!');
     }
 
     public function edit($id)
     {
-        $subscription = Subscription::find($id);
+        $subscription = SubscriptionPackage::find($id);
 
         if (!$subscription) {
             return response()->json(['error' => 'Subscription not found'], 404);
@@ -41,7 +41,7 @@ class SubscriptionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $subscription = Subscription::findOrFail($id);
+        $subscription = SubscriptionPackage::findOrFail($id);
 
         $request->validate([
             'package_name' => 'required|string|max:255',
@@ -58,7 +58,7 @@ class SubscriptionController extends Controller
 
     public function destroy($id)
     {
-        $subscription = Subscription::findOrFail($id);
+        $subscription = SubscriptionPackage::findOrFail($id);
         $subscription->delete();
 
         return redirect()->route('subscriptions.index')->with('success', 'Subscription deleted successfully!');

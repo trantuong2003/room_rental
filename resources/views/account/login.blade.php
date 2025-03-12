@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Boarding House</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/account/login.css') }}">
 </head>
 
 <body>
@@ -32,7 +32,7 @@
           <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
           <p>Remember me</p>
         </label>
-        <a href="#">Forgot password?</a>
+        <a href="/password/reset">Forgot password?</a>
       </div>
 
       <button type="submit">LogIn</button>

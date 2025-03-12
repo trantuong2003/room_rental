@@ -9,7 +9,7 @@
   <title>Registration Form in HTML CSS</title>
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <!---Custom CSS File--->
-  <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/account/register.css') }}">
   <script src="{{ asset('assets/js/register.js') }}"></script>
 </head>
 
@@ -32,6 +32,8 @@
       {{ session('success') }}
     </div>
     @endif
+
+    
     <form action="{{ route('register') }}" class="form" method="POST" enctype="multipart/form-data">
       @csrf
       <div class="input-box">

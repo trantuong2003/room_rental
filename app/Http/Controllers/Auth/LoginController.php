@@ -10,7 +10,7 @@ use App\Models\User;
 class LoginController extends Controller
 {
     public function showForm() {
-        return view('login');
+        return view('account.login');
     }
 
     public function login(Request $request) {

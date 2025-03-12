@@ -2,88 +2,55 @@
 
 @section('content')
 <div class="main">
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
+
     <div class="title2">CHOOSE YOUR PLAN</div>
     <div class="plans">
-        <!-- Free Plan -->
+        @if($subscriptionPackage->count() > 0)
+        @foreach($subscriptionPackage as $package)
         <div class="plan">
-            <div class="plan-header free">
-                <h2>FREE</h2>
+            <div class="plan-header {{ strtolower($package->package_name) }}">
+                <h2>{{ strtoupper($package->package_name) }}</h2>
             </div>
             <div class="plan-body">
                 <ul>
-                    <li><i class="fas fa-check text-green-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-check text-green-500"></i>Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Input</li>
+                    @php
+                    $features = explode('.', $package->description);
+                    @endphp
+                    @foreach($features as $feature)
+                    @if(!empty(trim($feature)))
+                    <li><i class="fas fa-check text-green-500"></i> {{ trim($feature) }}</li>
+                    @endif
+                    @endforeach
                 </ul>
-                <div class="price free">$0.00</div>
+                <div class="price standard {{ strtolower($package->package_name) }}">
+                    ${{ number_format($package->price, 2) }}
+                </div>
                 <div class="buy">
-                    <button>BUY NOW</button>
+                    <form action="{{ url('/landlord/vnpaypayment') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="price" value="{{ $package->price }}">
+                        <input type="hidden" name="package_id" value="{{ $package->id }}">
+                        <button onclick="subscribe({{ $package->id }})">BUY NOW</button>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- Basic Plan -->
-        <div class="plan">
-            <div class="plan-header basic">
-                <h2>BASIC</h2>
-            </div>
-            <div class="plan-body">
-                <ul>
-                    <li><i class="fas fa-check text-green-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-check text-green-500"></i>Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Input</li>
-                </ul>
-                <div class="price basic">$19.00</div>
-                <div class="buy">
-                    <button>BUY NOW</button>
-                </div>
-            </div>
-        </div>
-        <!-- Standard Plan -->
-        <div class="plan">
-            <div class="plan-header standard">
-                <h2>STANDARD</h2>
-            </div>
-            <div class="plan-body">
-                <ul>
-                    <li><i class="fas fa-check text-green-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-check text-green-500"></i>Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Input</li>
-                </ul>
-                <div class="price standard">$39.00</div>
-                <div class="buy">
-                    <button>BUY NOW</button>
-                </div>
-            </div>
-        </div>
-        <!-- Premium Plan -->
-        <div class="plan">
-            <div class="plan-header premium">
-                <h2>PREMIUM</h2>
-            </div>
-            <div class="plan-body">
-                <ul>
-                    <li><i class="fas fa-check text-green-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-check text-green-500"></i>Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Sample Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Here</li>
-                    <li><i class="fas fa-times text-red-500"></i>Your Text Input</li>
-                </ul>
-                <div class="price premium">$69.00</div>
-                <div class="buy">
-                    <button>BUY NOW</button>
-                </div>
-            </div>
-        </div>
+        @endforeach
+        @else
+        <p>No subscriptions available.</p>
+        @endif
     </div>
 </div>
 @endsection
