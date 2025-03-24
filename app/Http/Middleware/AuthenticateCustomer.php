@@ -6,8 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
-class AuthenticateAdmin
+class AuthenticateCustomer
 {
     /**
      * Handle an incoming request.
@@ -18,7 +17,7 @@ class AuthenticateAdmin
     {
         $user = auth()->user();
         // if(!$user->is_admin){
-        if ($user->role !== 'admin') {
+        if ($user->role !== 'customer') {
             return redirect('/');
         }
         return $next($request); 

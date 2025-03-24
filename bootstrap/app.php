@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AuthenticateAdmin;
+use App\Http\Middleware\AuthenticateCustomer;
 use App\Http\Middleware\AuthenticateLandlord;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth.admin' => AuthenticateAdmin::class,
             'auth.landlord' => AuthenticateLandlord::class,
+            'auth.customer' => AuthenticateCustomer::class,
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         ]);
     })

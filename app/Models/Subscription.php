@@ -35,4 +35,19 @@ class Subscription extends Model
     {
         return $query->where('status', 'expired')->orWhere('end_date', '<', now());
     }
+
+    // Kiểm tra xem người dùng có thể đăng bài hay không
+    public function canPost()
+    {
+        return $this->remaining_posts > 0 && $this->status == 'active' && $this->end_date >= now();
+    }
+
+    // Giảm số lượt đăng bài
+    public function decrementRemainingPosts()
+    {
+        $this->decrement('remaining_posts');
+        if ($this->remaining_posts <= 0) {
+            $this->update(['status' => 'expired']);
+        }
+    }
 }

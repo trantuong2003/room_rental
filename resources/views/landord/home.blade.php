@@ -36,7 +36,8 @@
         <div class="card">
             <div>
                 <div class="numbers">1,504</div>
-                <div class="cardName">Daily Views</div>
+
+                <div class="cardName">Daily Views </div>
             </div>
 
             <div class="iconBx">
@@ -68,8 +69,8 @@
 
         <div class="card">
             <div>
-                <div class="numbers">$7,842</div>
-                <div class="cardName">Earning</div>
+                <div id="remaining-posts" class="numbers">{{ $remainingPosts }}</div>
+                <div class="cardName">Remaining Posts</div>
             </div>
 
             <div class="iconBx">
@@ -238,5 +239,4 @@
         </div>
     </div>
 </div>
-
 @endsection

@@ -8,8 +8,13 @@
     <title>Renter</title>
     <link rel="stylesheet" href="{{ asset('assets/css/landlord/landord.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/landlord/payment_history.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/create_posts.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/post.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/detail_post.css') }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/landord.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.api_key') }}"></script>
 </head>
 
 <body>
@@ -36,7 +41,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="/landlord/posts">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -113,12 +118,14 @@
                     </form>
                 </div>
             </div>
-            @yield('content')
+            <div class="container_content">
+                @yield('content')
+            </div>
         </main>
     </div>
 
     <!-- =========== Scripts =========  -->
-    <script src="assets/js/main.js"></script>
+    {{-- <script src="assets/js/main.js"></script> --}}
 
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>

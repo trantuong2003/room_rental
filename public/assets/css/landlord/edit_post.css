@@ -1,0 +1,107 @@
+.create_post{
+    background-color: #f3f4f6;
+    padding: 20px 0px;
+
+}
+
+.create_post .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #0000001a;
+    align-items: center;
+
+}
+
+.create_post h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1f2937;
+    display: flex;
+    justify-content: center;
+}
+.create_post h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: #1f2937;
+}
+.create_post .grid {
+    display: grid;
+    gap: 24px;
+}
+.create_post .grid-2 {
+    grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+    .create_post .grid-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.create_post label {
+    display: block;
+    color: #4b5563;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+.create_post input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 1rem;
+    color: #1f2937;
+}
+.create_post .flex {
+    display: flex;
+}
+.create_post .flex input {
+    border-radius: 4px 0 0 4px;
+}
+.create_post .flex select, .flex span {
+    border-radius: 0 4px 4px 0;
+    border-left: 0;
+}
+.create_post .text-right {
+    text-align: right;
+}
+.create_post .text-gray-500 {
+    color: #6b7280;
+}
+.create_post .border-dashed {
+    border-style: dashed;
+}
+.create_post .text-center {
+    text-align: center;
+}
+.create_post .bg-yellow-500 {
+    background-color: #f59e0b;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create_post .mb-4 {
+    margin-bottom: 16px;
+}
+
+.btn-create {
+    background-color: #f59e0b;
+    color: #ffffff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-create:hover {
+    background-color: #e67e22; /* Màu cam đậm hơn khi hover */
+}
+

@@ -19,26 +19,27 @@ class DatabaseSeeder extends Seeder
         $user = new User();
         $user->name = 'Admin';
         $user->email = 'admin@gmail.com';
-        // $user->is_admin = true;
         $user->role = 'admin';
         $user->password = bcrypt('123456');
         $user->save();
 
-        
-        // $user = new User();
-        // $user->name = 'Customer';
-        // $user->email = 'customer@gmail.com';
-        // // $user->is_admin = false;
-        // $user->role = 'customer';
-        // $user->password = bcrypt('123456');
-        // $user->save();
 
-        // $user = new User();
-        // $user->name = 'Landlord';
-        // $user->email = 'landlord@gmail.com';
-        // // $user->is_admin = false;
-        // $user->role = 'landlord';
-        // $user->password = bcrypt('123456');
-        // $user->save();
+        // Tạo tài khoản Customer
+        $customer = new User();
+        $customer->name = 'Customer';
+        $customer->email = 'customer@gmail.com';
+        $customer->role = 'customer';
+        $customer->password = bcrypt('123456789');
+        $customer->email_verified_at = now(); // Không cần xác minh email
+        $customer->save();
+
+        // Tạo tài khoản Landlord
+        $landlord = new User();
+        $landlord->name = 'Landlord';
+        $landlord->email = 'landlord@gmail.com';
+        $landlord->role = 'landlord';
+        $landlord->password = bcrypt('123456789');
+        $landlord->email_verified_at = now(); // Không cần xác minh email
+        $landlord->save();
     }
 }

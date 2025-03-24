@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin</title>
     <link rel="stylesheet" href="{{ asset('assets/css/admin/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/subscription.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/moderation_post.css') }}">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/admin.js') }}"></script>
 </head>
 
@@ -33,21 +36,21 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/admin/moderation_post">
                     <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">Analytics</span>
+                    <span class="text">Moderation</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class='bx bxs-message-dots'></i>
-                    <span class="text">Message</span>
+                    <span class="text">Comment</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class='bx bxs-group'></i>
-                    <span class="text">Team</span>
+                    <span class="text">Account</span>
                 </a>
             </li>
         </ul>

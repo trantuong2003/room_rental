@@ -1,0 +1,199 @@
+.post_container{
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f3f4f6;
+    padding: 24px;
+    /* border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    border: 0px;
+
+}
+.post {
+    background-color: #f3f4f6;
+    padding: 24px;
+    height: 100vh;
+
+}
+.post_container .title{ 
+    display: flex;
+    justify-content: space-between;
+}
+.post_container .title a{ 
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff; /* Màu nền */
+    color: white; /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 5px; /* Bo góc */
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.post_container .title a:hover {
+    background-color: #0056b3; /* Màu khi di chuột vào */
+  }
+.listing {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 24px 0px;
+    display: flex;
+    
+}
+.listing img {
+    border-radius: 8px;
+}
+.listing .images {
+    width: 33.3333%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+}
+.listing .images img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+}
+.listing .images img {
+    border-radius: 8px;
+    object-fit: cover; /* Giúp ảnh không bị méo */
+}
+
+.listing .images > img {
+    width: 330px; /* Đặt kích thước cố định */
+    height: 200px;
+    display: block;
+}
+
+.listing .grid {
+    display: flex;
+    justify-content: center;
+    width: 300px; /* Bằng với ảnh lớn */
+}
+
+.listing .grid img {
+    width: calc(100% / 3 - 4px); /* Chia đều 3 ảnh */
+    height: 100px; /* Đặt chiều cao cố định */
+    object-fit: cover; /* Giúp ảnh không bị méo */
+    margin: 0px 5px;
+}
+
+.listing .details {
+    width: 66.6667%;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+}
+.listing .details .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.listing .details .header span {
+    background-color: #f59e0b;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+}
+.listing .details .header h2 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.listing .details .price {
+    color: #ef4444;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.listing .details .price span {
+    color: #6b7280;
+    font-size: 14px;
+}
+.listing .details .location {
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+.listing .details .location i {
+    margin-right: 4px;
+}
+.listing .details p {
+    color: #374151;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+.listing .details .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: 18px;
+}
+.listing .details .footer .profile {
+    display: flex;
+    align-items: center;
+}
+.listing .details .footer .profile img {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin-right: 8px;
+}
+.listing .details .footer .profile p {
+    margin: 0;
+    font-size: medium;
+    font-style: bold;
+    
+}
+.listing .details .footer .profile p:first-child {
+    color: #374151;
+    font-weight: bold;
+}
+.listing .details .footer .profile p:last-child {
+    color: #6b7280;
+    font-size: 14px;
+}
+.listing .details .footer .actions {
+    display: flex;
+    align-items: center;
+}
+.listing .details .footer .actions button {
+    background-color: #14b8a6;
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+.listing .details .footer .actions button i {
+    margin-right: 4px;
+}
+.listing .details .footer .actions button:last-child {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+.listing .details .footer .actions a{ 
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #e5e7eb; /* Màu nền */
+    color: #374151; /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 8px; /* Bo góc */
+    font-size: 13.3333px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-right: 4px;
+}
+
+.listing .details .footer .actions a:hover {
+    background-color: #7b828b; /* Màu khi di chuột vào */
+  }

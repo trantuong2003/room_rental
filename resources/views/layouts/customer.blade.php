@@ -5,8 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Renter</title>
-  <link rel="stylesheet" href="{{ asset('assets/css/customer.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/customer.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/detail_post.css') }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="{{ asset('assets/js/customer.js') }}"></script>
@@ -21,8 +23,8 @@
   <header>
     <div class="navbar">
       <div class="navbar-left">
-        <img alt="Batdongsan logo" height="40" src="assets/image/logotro.png" width="100" />
-        <a href="/">
+        <img alt="Batdongsan logo" height="40" src={{ asset('assets/image/logotro.png') }} width="100" />
+        <a href="/customer">
           Trang chủ
         </a>
         <a class="active" href="messagecustomer">
@@ -45,7 +47,7 @@
         </a>
       </div>
       <div class="navbar-right">
-        <a href="/favourite">
+        <a href="/customer/posts/favorites">
           Yêu thích
         </a>
         <i class="fas fa-heart icon">

@@ -8,11 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Subscription;
+use App\Models\Favourite;
 
 class User extends Authenticatable  implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasRoles, HasFactory, Notifiable;
+    use HasRoles, HasFactory, Notifiable, MustVerifyEmailTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -70,4 +74,15 @@ class User extends Authenticatable  implements MustVerifyEmail
     {
         return $this->role === 'customer';
     }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class,  'user_id');
+    }
+
+    public function favorites()
+{
+    return $this->hasMany(Favorite::class);
+}
+
 }
