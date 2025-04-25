@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\CustomerPost;
+
+class PostApprovalCustomerController extends Controller
+{
+    public function index()
+    {
+        $posts = CustomerPost::with('user')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+            
+        return view('admin.approval_customer_post', compact('posts'));
+    }
+
+    public function approve($id)
+    {
+        $post = CustomerPost::findOrFail($id);
+        $post->update([
+            'status' => 'approved',
+            'approved_at' => now(),
+        ]);
+        
+        return back()->with('success', 'Bài đăng đã được duyệt');
+    }
+
+    public function reject(Request $request, $id)
+    {
+        // $request->validate(['reason' => 'required|string|max:255']);
+        
+        $post = CustomerPost::findOrFail($id);
+        $post->update([
+            'status' => 'rejected',
+        ]);
+        
+        return back()->with('success', 'Bài đăng đã bị từ chối');
+    }
+}

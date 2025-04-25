@@ -136,3 +136,26 @@ button:hover {
   margin-top: 30px;
   color: #fff;
 }
+
+/*mat xem mk*/
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  padding-right: 40px; /* Tạo khoảng trống cho icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #aaa;
+  z-index: 2;
+}
+
+.eye-icon:hover {
+  color: #555;
+}

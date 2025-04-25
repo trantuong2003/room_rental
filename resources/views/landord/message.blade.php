@@ -1,4 +1,4 @@
-@extends('layouts.customer')
+@extends('layouts.landord')
 
 @section('content')
 <div class="main">
@@ -15,7 +15,7 @@
             <div class="conversations">
                 @forelse ($users as $user)
                     <div class="conversation {{ $userId == $user->id ? 'active' : '' }}"
-                         onclick="window.location='{{ route('customer.chat.user', $user->id) }}'">
+                         onclick="window.location='{{ route('landlord.chat.user', $user->id) }}'">
                         <div class="conversation-avatar">
                             <img src="{{ $user->avatar ?? 'https://randomuser.me/api/portraits/men/32.jpg' }}" alt="User">
                         </div>
@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="message-input-container">
-                    <form action="{{ route('customer.messages.send') }}" method="POST" class="message-form">
+                    <form action="{{ route('landlord.messages.send') }}" method="POST" class="message-form">
                         @csrf
                         <div class="message-input-wrapper">
                             <input type="hidden" name="receiver_id" value="{{ $userId }}">

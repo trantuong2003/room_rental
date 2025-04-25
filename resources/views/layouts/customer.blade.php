@@ -9,6 +9,9 @@
   <title>Renter</title>
   <link rel="stylesheet" href="{{ asset('assets/css/customer/customer.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/customer/detail_post.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/listpost.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/historypost.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/message.css') }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="{{ asset('assets/js/customer.js') }}"></script>
@@ -19,7 +22,7 @@
   <div class="">
     {{session('msg')}}
   </div>
-  @endif
+  @endif  
   <header>
     <div class="navbar">
       <div class="navbar-left">
@@ -27,14 +30,14 @@
         <a href="/customer">
           Trang chủ
         </a>
-        <a class="active" href="messagecustomer">
+        <a class="active" href="/customer/chat">
           Tin nhắn của tôi
         </a>
-        <a href="#">
-          Dự án
+        <a href="/customer/post/roommates/history">
+          Bài đăng của tôi
         </a>
-        <a href="#">
-          Tin tức
+        <a href="/customer/post/roommates">
+          Bài đăng cộng đồng
         </a>
         <a href="#">
           Wiki BĐS
@@ -59,7 +62,7 @@
           Đăng ký
         </a>
         <div class="button">
-          <a href="/postcustomer">Đăng tin</a>
+          <a href="/customer/post/roommates/create">Đăng tin</a>
         </div>
         <div>
           <form action="{{ route('logout') }}" method="POST">

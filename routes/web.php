@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\ModerationPostController;
+use App\Http\Controllers\Admin\PostApprovalCustomerController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Landlord\PackageController;
 use App\Http\Controllers\Landlord\PaymentController;
@@ -17,24 +18,26 @@ use App\Http\Controllers\Landlord\CreatePostController;
 use App\Http\Controllers\Landlord\PostController;
 use App\Http\Controllers\Landlord\HomeController;
 use App\Http\Controllers\Landlord\SubscriptionsController;
+use App\Http\Controllers\Landlord\MessageControllerLandlord;
 
 //customer
 use App\Http\Controllers\Customer\HomeCustomerController;
 use App\Http\Controllers\Customer\DetailPostController;
 use App\Http\Controllers\Customer\FavoritePostController;
+use App\Http\Controllers\Customer\CustomerPostController;
+use App\Http\Controllers\Customer\ListPostCustomerController;
+use App\Http\Controllers\Customer\MessageController;
+
 
 use App\Http\Controllers\CommentController;
 
+use App\Http\Controllers\Customer\FavoriteCustomerPost;
+use App\Http\Controllers\Customer\CommentCustomerPost;
 
 
 
-// Route::get('/favourite', function () {
-//     return view('customer/favourite');
-// });
 
-// Route::get('/postcustomer', function () {
-//     return view('customer/post');
-// });
+
 
 // Route::get('/messagecustomer', function () {
 //     return view('customer/message');
@@ -57,19 +60,60 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
     Route::prefix('customer')->group(function () {
         Route::get('/', [HomeCustomerController::class, 'home'])->name('customer.home');
 
-        //post
+        //post rental room
         Route::prefix('posts')->group(function () {
             Route::get('/detail/{id}', [DetailPostController::class, 'detailPost'])->name('customer.post.detail');
             Route::post('/toggle-favorite-home', [HomeCustomerController::class, 'toggleFavorite'])->name('customer.post.toggleFavorite');
             Route::post('/toggle-favorite-detail', [DetailPostController::class, 'toggleFavorite'])->name('customer.detail.toggleFavorite');
+
+
             Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
             Route::post('/toggle-favorite-detail-page', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
+
+            // Route::post('/{post}/toggle-favorite-customer-post', [FavoritePostController::class, 'toggleFavorite'])->name('customer.post.toggleFavorite');
 
             // 👉 Route để bình luận (customer)
             Route::post('/{post}/comments', [CommentController::class, 'store'])->name('customer.comments.store');
             Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('customer.comments.update');
-
         });
+
+        //post find roommate
+        Route::prefix('post/roommates')->group(function () {
+            Route::get('/', [ListPostCustomerController::class, 'index'])->name('customer.roommates.index'); // Danh sách bài đăng
+            Route::get('/history', [CustomerPostController::class, 'history'])->name('customer.roommates.history'); // lịch sử bài đăng
+            Route::get('/create', [CustomerPostController::class, 'create'])->name('customer.roommates.create'); // Trang tạo bài đăng
+            Route::post('/', [CustomerPostController::class, 'store'])->name('customer.roommates.store'); // Lưu bài đăng
+            Route::get('/{post}/edit', [CustomerPostController::class, 'edit'])->name('customer.roommates.edit'); // Trang sửa bài đăng
+            Route::put('/{post}', [CustomerPostController::class, 'update'])->name('customer.roommates.update'); // Cập nhật bài đăng
+            Route::delete('/{post}', [CustomerPostController::class, 'destroy'])->name('customer.roommates.destroy'); // Xóa bài đăng
+
+            // Route bình luận cho bài đăng customer (roommates)
+            Route::post('/{post}/comments', [CommentController::class, 'store'])->name('customer.roommates.comments.store');
+            Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('customer.roommates.comments.update');
+
+            // Toggle like cho bài đăng roommates
+            Route::post('/{post}/toggle-like', [CustomerPostController::class, 'toggleLike'])->name('customer.roommates.toggleLike');
+        });
+
+        //nhan tin
+        Route::prefix('chat')->group(function () {
+            Route::get('/', [MessageController::class, 'index'])->name('customer.chat');
+            Route::get('/{userId}', [MessageController::class, 'index'])->name('customer.chat.user');
+            Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('customer.messages.send');
+            Route::get('/messages/{userId}', [MessageController::class, 'getMessages'])->name('customer.chat.messages');
+            Route::post('/mark-read/{userId}', [MessageController::class, 'markAsRead'])->name('customer.chat.mark-read');
+        });
+
+
+        // Route xử lý thích bài đăng
+        Route::post('/toggle-favorite-customer-post', [ListPostCustomerController::class, 'toggleFavorite'])
+            ->name('customer.post.favorite.toggleFavorite');
+
+        // Route xử lý bình luận
+        Route::post('/{post}/comments/customer-post', [ListPostCustomerController::class, 'storeComment'])
+            ->name('customer.post.comments.store');
+        Route::put('/comments/{comment}/customer-post', [ListPostCustomerController::class, 'updateComment'])
+            ->name('customer.post.comments.update');
     });
 });
 
@@ -90,10 +134,15 @@ Route::middleware('auth')->group(function () {
         Route::delete('/subscription/{id}', [SubscriptionController::class, 'destroy'])->name('subscriptions.destroy');
 
 
-        //post moderation
+        //post moderation landlord
         Route::get('/moderation_post', [ModerationPostController::class, 'showPost'])->name('moderation.index');
         Route::patch('/moderation_post/{id}/approve', [ModerationPostController::class, 'approve'])->name('posts.approve');
         Route::patch('/moderation_post/{id}/reject', [ModerationPostController::class, 'reject'])->name('posts.reject');
+
+        //post moderation customer
+        Route::get('/moderation/customer/post', [PostApprovalCustomerController::class, 'index'])->name('moderation.customer.index');
+        Route::post('/moderation/customer/posts/{id}/approve', [PostApprovalCustomerController::class, 'approve'])->name('moderation.customer.approve');
+        Route::post('/moderation/customer/posts/{id}/reject', [PostApprovalCustomerController::class, 'reject'])->name('moderation.customer.reject');
     });
 });
 
@@ -131,6 +180,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/subscription/remaining-posts', [SubscriptionsController::class, 'getRemainingPosts'])
             ->name('subscription.remaining_posts');
+
+
+        // Route::prefix('chat')->group(function () {
+        //     Route::get('/', [MessageController::class, 'index'])->name('landlord.chat');
+        //     Route::post('/messages/send', [MessageController::class, 'sendMessage'])->name('customer.messages.send');
+        //     Route::get('/{userId}', [MessageController::class, 'index'])->name('customer.chat.user');
+        // });
+
+        Route::prefix('chat')->group(function () {
+            Route::get('/', [MessageControllerLandlord::class, 'index'])->name('landlord.chat');
+            Route::get('/{userId}', [MessageControllerLandlord::class, 'index'])->name('landlord.chat.user');
+            Route::post('/messages/send', [MessageControllerLandlord::class, 'sendMessage'])->name('landlord.messages.send');
+            Route::get('/messages/{userId}', [MessageControllerLandlord::class, 'getMessages'])->name('landlord.chat.messages');
+            Route::post('/mark-read/{userId}', [MessageControllerLandlord::class, 'markAsRead'])->name('landlord.chat.mark-read');
+        });
     });
 });
 

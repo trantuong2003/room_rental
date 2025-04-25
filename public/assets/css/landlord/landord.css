@@ -77,6 +77,16 @@ body {
   text-decoration: none;
   color: var(--white);
 }
+
+.navigation ul li a form {
+  position: relative;
+  display: block;
+  width: 100%;
+  display: flex;
+  text-decoration: none;
+  color: var(--white);
+}
+
 .navigation ul li:hover a,
 .navigation ul li.hovered a {
   color: var(--blue);
@@ -130,6 +140,57 @@ body {
   border-radius: 50%;
   box-shadow: 35px -35px 0 10px var(--white);
   pointer-events: none;
+}
+
+/* Reset form và button styles */
+.navigation ul li .logout-form {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.navigation ul li .logout-button {
+  display: flex;
+  width: 100%;
+  height: 60px; /* Chiều cao bằng với các mục khác */
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Đảm bảo icon và title giống các mục khác */
+.navigation ul li .logout-button .icon {
+  min-width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation ul li .logout-button .icon ion-icon {
+  font-size: 2rem; /* Kích thước icon bằng với các mục khác */
+}
+
+.navigation ul li .logout-button .title {
+  padding: 0 10px;
+  height: 60px;
+  line-height: 60px;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+/* Hiệu ứng hover */
+.navigation ul li:hover .logout-button,
+.navigation ul li.hovered .logout-button {
+  color: var(--blue);
 }
 
 /* ===================== Main ===================== */

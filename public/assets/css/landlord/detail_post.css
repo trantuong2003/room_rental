@@ -122,8 +122,239 @@
     margin-top: 20px;
 }
 
+
 /* Comments Section */
+/* Comment Section */
 .comments {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.comment-form, .edit-form, .reply-form {
+    margin-bottom: 20px;
+}
+
+.comment-form textarea, 
+.edit-form textarea, 
+.reply-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-submit {
+    background: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit:hover {
+    background: #3a5a80;
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment {
+    background: white;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.level-1 {
+    border-left: 4px solid #4a6fa5;
+}
+
+.level-2 {
+    margin-left: 40px;
+    margin-top: 15px;
+    background: #f8fafc;
+    border-left: 3px solid #6c757d;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-author-info strong {
+    font-size: 1.05em;
+    color: #2d3748;
+}
+
+.comment-time {
+    font-size: 0.85em;
+    color: #718096;
+}
+
+.comment-content {
+    margin: 10px 0;
+    line-height: 1.5;
+    /* white-space: pre-line; */
+}
+
+.comment-actions, .reply-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-action {
+    background: none;
+    border: none;
+    color: #4a6fa5;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: color 0.3s;
+}
+
+.btn-action:hover {
+    color: #3a5a80;
+    text-decoration: underline;
+}
+
+.btn-action i {
+    font-size: 0.9em;
+}
+
+.toggle-replies {
+    background: none;
+    border: none;
+    color: #4a6fa5;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.toggle-replies:hover {
+    text-decoration: underline;
+}
+
+.toggle-icon {
+    transition: transform 0.3s;
+}
+
+.replies {
+    margin-top: 15px;
+    display: none;
+}
+
+.replies.expanded {
+    display: block;
+}
+
+.replies.collapsed {
+    display: none;
+}
+
+.reply.level-2 {
+    margin-left: 30px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    border-left: 3px solid #ccc;
+}
+
+.reply.level-3 {
+    margin-left: 50px;
+    margin-top: 10px;
+    background-color: #f5f5f5;
+    border-left: 3px solid #aaa;
+}
+
+.reply-to {
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+}
+.edit-form {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    display: none; /* Mặc định ẩn */
+}
+
+.edit-form textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-submit {
+    background: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+/* .comments {
     margin-top: 20px;
 }
 .comments form {
@@ -154,4 +385,4 @@
     padding: 10px;
     background-color: #f9fafb;
     border-radius: 8px;
-}
+} */

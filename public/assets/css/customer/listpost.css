@@ -1,0 +1,360 @@
+.list-post-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.post-find-roommate {
+    background: white;
+    padding: 20px;
+    width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.post-find-roommate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.post-find-roommate-header h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.post-find-roommate-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+}
+
+.post-find-roommate-content h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.post-find-roommate-content p {
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Action buttons */
+.post-find-roommate-actions {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+}
+
+.post-find-roommate-actions > div,
+.post-find-roommate-actions > button {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #65676b;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.post-find-roommate-actions > div:hover,
+.post-find-roommate-actions > button:hover {
+    background-color: #f0f2f5;
+}
+
+.post-find-roommate-actions i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.like-btn.active i,
+.like-btn.active .action-text {
+    color: #1877f2;
+}
+
+.action-text {
+    margin-right: 5px;
+}
+
+.action-count {
+    font-size: 13px;
+    color: #65676b;
+}
+
+/* Comment section toggle button */
+.comment-toggle.active {
+    color: #1877f2;
+}
+
+.comment-toggle.active i {
+    color: #1877f2;
+}
+    /* Phần bình luận */
+    /* Comment section specific styles */
+    .post-comments-section {
+        margin-top: 20px;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+    }
+    
+    .post-comment-form {
+        display: flex;
+        margin-bottom: 20px;
+    }
+    
+    .post-comment-form .comment-avatar {
+        margin-right: 12px;
+    }
+    
+    .post-comment-form .comment-avatar i {
+        font-size: 36px;
+        color: #718096;
+    }
+    
+    .post-comment-form form {
+        flex-grow: 1;
+    }
+    
+    .post-comment-form textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        resize: vertical;
+        min-height: 80px;
+        margin-bottom: 12px;
+        font-family: inherit;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+    }
+    
+    .post-comment-form textarea:focus {
+        outline: none;
+        border-color: #4299e1;
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
+
+    /* Thêm style cho phần bình luận ẩn/hiện */
+.comment-section {
+    transition: all 0.3s ease;
+}
+
+.comment-toggle {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 14px;
+    color: #555;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.comment-toggle:hover {
+    background-color: #f0f2f5;
+    color: #1877f2;
+}
+
+.comment-toggle.active {
+    color: #1877f2;
+    font-weight: bold;
+}
+    
+    .submit-comment {
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .submit-comment:hover {
+        background-color: #3182ce;
+    }
+    
+    .login-to-comment {
+        padding: 10px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .login-to-comment a {
+        color: #4299e1;
+        text-decoration: none;
+    }
+    
+    .login-to-comment a:hover {
+        text-decoration: underline;
+    }
+    
+    /* Comment list styles */
+    .post-comments-list {
+        margin-top: 20px;
+    }
+    
+    .post-comment {
+        display: flex;
+        margin-bottom: 20px;
+    }
+    
+    .post-comment .comment-avatar {
+        margin-right: 12px;
+    }
+    
+    .post-comment .comment-avatar i {
+        font-size: 36px;
+        color: #718096;
+    }
+    
+    .comment-content-wrapper {
+        flex-grow: 1;
+    }
+    
+    .comment-content-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+    
+    .comment-author {
+        font-weight: 600;
+        font-size: 15px;
+        margin-right: 12px;
+        color: #2d3748;
+    }
+    
+    .comment-time {
+        font-size: 13px;
+        color: #718096;
+    }
+    
+    .comment-text {
+        font-size: 15px;
+        line-height: 1.5;
+        color: #4a5568;
+        margin-bottom: 10px;
+    }
+    
+    .comment-actions {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .btn-reply,
+    .btn-edit,
+    .btn-view-replies {
+        background: none;
+        border: none;
+        color: #4299e1;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0;
+        transition: color 0.2s ease;
+    }
+    
+    .btn-reply:hover,
+    .btn-edit:hover,
+    .btn-view-replies:hover {
+        color: #3182ce;
+        text-decoration: underline;
+    }
+    
+    .btn-view-replies .toggle-icon {
+        margin-left: 5px;
+        transition: transform 0.2s ease;
+    }
+    
+    /* Reply styles */
+    .post-comment.reply {
+        margin-left: 48px;
+        margin-top: 15px;
+    }
+    
+    .post-comment.nested-reply {
+        margin-left: 36px;
+    }
+    
+    .reply-to {
+        color: #718096;
+        font-size: 13px;
+    }
+    
+    /* Comment form styles (edit and reply) */
+    .comment-edit-form,
+    .comment-reply-form {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .comment-edit-form textarea,
+    .comment-reply-form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        resize: vertical;
+        min-height: 60px;
+        margin-bottom: 10px;
+        font-family: inherit;
+        font-size: 14px;
+    }
+    
+    .comment-form-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .btn-submit {
+        background-color: #4299e1;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+    
+    .btn-submit:hover {
+        background-color: #3182ce;
+    }
+    
+    .btn-cancel {
+        background: none;
+        border: 1px solid #e2e8f0;
+        color: #718096;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-cancel:hover {
+        background-color: #f7fafc;
+    }
+    
+    /* Replies section */
+    .comment-replies {
+        margin-top: 15px;
+        border-left: 2px solid #e2e8f0;
+        padding-left: 15px;
+    }

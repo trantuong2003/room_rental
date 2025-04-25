@@ -1,4 +1,4 @@
-@extends('layouts/customer');
+@extends('layouts.customer')
 
 @section('content')
 <div class="container">
@@ -33,8 +33,10 @@
                     <p class="value">{{ $post->bedrooms }}</p>
                 </div>
                 <div class="icons">
-                    <i class="fas fa-share-alt"></i>
-                    <div class="favorite-btn" data-post-id="{{ $post->id }}" style="cursor: pointer;">
+                    <i class="fas fa-share-alt share-btn" data-url="{{ url()->current() }}"
+                        style="cursor: pointer;"></i>
+                    <div class="favorite-btn" data-post-id="{{ $post->id }}" data-post-type="landlord"
+                        onclick="toggleFavorite(event)" style="cursor: pointer;">
                         <i class="fas fa-heart" style="color: {{ $post->isFavorited ? 'red' : 'gray' }};"></i>
                     </div>
                 </div>
@@ -87,7 +89,6 @@
                 </div>
             </div>
 
-
             {{-- Google Maps --}}
             @if ($post->latitude && $post->longitude)
             <h2 class="section-title">Vị trí</h2>
@@ -97,76 +98,260 @@
             <!-- Comments Section -->
             <h2 class="section-title">Bình luận</h2>
             <div class="comments">
-                 <!-- Form viết bình luận -->
-                <form action="{{ route('customer.comments.store', $post->id) }}" method="POST">
-                    @csrf
-                    <textarea name="content" placeholder="Viết bình luận của bạn..." required></textarea>
-                    <button type="submit">Gửi bình luận</button>
-                </form>
-
-                <!-- DANH SÁCH BÌNH LUẬN -->
+                @auth
+                <div class="add-comment">
+                    <h3>Thêm bình luận</h3>
+                    <form action="{{ route('customer.comments.store', $post->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="post_type" value="landlord">
+                        <textarea name="content" placeholder="Viết bình luận của bạn..." required></textarea>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">Gửi bình luận</button>
+                        </div>
+                    </form>
+                </div>
+                @else
+                <div class="login-to-comment">
+                    <p>Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để bình luận</p>
+                </div>
+                @endauth
+                <!-- Danh sách bình luận -->
                 <div class="comment-list">
-                    @foreach ($post->comments->where('parent_id', null)->sortByDesc('created_at') as $comment)
-                        <div class="comment">
-                            <p><strong>{{ $comment->user->name }}</strong> - {{ $comment->created_at->diffForHumans() }}</p>
-                            <p id="comment-text-{{ $comment->id }}">{{ $comment->content }}</p>
-
-                            <!-- Nút "Chỉnh sửa" -->
+                    @foreach ($post->comments->whereNull('parent_id')->sortByDesc('created_at') as $comment)
+                    <div class="comment">
+                        <div class="comment-header">
+                            <div class="comment-author-info">
+                                <strong>{{ $comment->user->name }}</strong>
+                                <span class="comment-time">{{ $comment->created_at->diffForHumans() }}</span>
+                            </div>
                             @auth
-                                @if (Auth::id() === $comment->user_id)
-                                    <button class="edit-btn" onclick="toggleEditForm({{ $comment->id }})">Chỉnh sửa</button>
-                                    <form action="{{ route('customer.comments.update', $comment->id) }}" method="POST" class="edit-form" id="edit-form-{{ $comment->id }}" style="display: none;">
-                                        @csrf
-                                        @method('PUT')
-                                        <textarea name="content" required>{{ $comment->content }}</textarea>
-                                        <button type="submit">Lưu</button>
-                                    </form>
-                                @endif
+                            @if (Auth::id() === $comment->user_id)
+                            <button class="btn-action edit-btn" onclick="toggleEditForm({{ $comment->id }}, event)">
+                                <i class="fas fa-edit"></i> Chỉnh sửa
+                            </button>
+                            @endif
+                            @endauth
+                        </div>
+
+                        <div class="comment-content" id="comment-text-{{ $comment->id }}">
+                            {{ $comment->content }}
+                        </div>
+
+                        <!-- Form chỉnh sửa -->
+                        @auth
+                        @if (Auth::id() === $comment->user_id)
+                        <form action="{{ route('customer.comments.update', $comment->id) }}" method="POST"
+                            class="edit-form" id="edit-form-{{ $comment->id }}" style="display: none;">
+                            @csrf
+                            @method('PUT')
+                            <textarea name="content" required>{{ $comment->content }}</textarea>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Lưu</button>
+                                <button type="button" class="btn-cancel"
+                                    onclick="toggleEditForm(event, {{ $comment->id }})">Hủy</button>
+                            </div>
+                        </form>
+                        @endif
+                        @endauth
+
+                        <!-- Nút trả lời -->
+                        <div class="reply-actions">
+                            @auth
+                            <button class="btn-action reply-btn" onclick="toggleReplyForm({{ $comment->id }})">
+                                <i class="fas fa-reply"></i> Trả lời
+                            </button>
                             @endauth
 
-                            <!-- Nút "Trả lời" -->
-                            @auth
-                                @if (Auth::user()->role === 'customer' || (Auth::user()->role === 'landlord' && $comment->user->role === 'customer'))
-                                    <button class="reply-btn" onclick="toggleReplyForm({{ $comment->id }})">Trả lời</button>
-                                @endif
-                            @endauth
-
-                            <!-- Form trả lời bình luận -->
-                            <form action="{{ route('customer.comments.store', $post->id) }}" method="POST" class="reply-form" id="reply-form-{{ $comment->id }}" style="display: none;">
-                                @csrf
-                                <input type="hidden" name="parent_id" value="{{ $comment->id }}">
-                                <textarea name="content" placeholder="Trả lời..." required></textarea>
-                                <button type="submit">Gửi</button>
-                            </form>
-
-                            <!-- Danh sách trả lời -->
                             @if ($comment->replies->count() > 0)
-                                <button class="toggle-replies" onclick="toggleReplies({{ $comment->id }})">
-                                    Xem {{ $comment->replies->count() }} phản hồi
-                                </button>
-                                <div class="replies" id="replies-{{ $comment->id }}" style="display: none;">
-                                    @foreach ($comment->replies as $reply)
-                                        <div class="comment reply">
-                                            <p><strong>{{ $reply->user->name }}</strong> - {{ $reply->created_at->diffForHumans() }}</p>
-                                            <p id="comment-text-{{ $reply->id }}">{{ $reply->content }}</p>
-
-                                            <!-- Nút "Chỉnh sửa" -->
-                                            @auth
-                                                @if (Auth::id() === $reply->user_id)
-                                                    <button class="edit-btn" onclick="toggleEditForm({{ $reply->id }})">Chỉnh sửa</button>
-                                                    <form action="{{ route('customer.comments.update', $reply->id) }}" method="POST" class="edit-form" id="edit-form-{{ $reply->id }}" style="display: none;">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <textarea name="content" required>{{ $reply->content }}</textarea>
-                                                        <button type="submit">Lưu</button>
-                                                    </form>
-                                                @endif
-                                            @endauth
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <button class="btn-action toggle-replies" onclick="toggleReplies({{ $comment->id }})"
+                                id="toggle-btn-{{ $comment->id }}">
+                                <i class="fas fa-comments"></i>
+                                <span class="toggle-text">Xem {{ $comment->replies->count() }} phản hồi</span>
+                                <i class="fas fa-chevron-down toggle-icon"></i>
+                            </button>
                             @endif
                         </div>
+
+                        <!-- Form trả lời -->
+                        @auth
+                        <form action="{{ route('customer.comments.store', $post->id) }}" method="POST"
+                            class="reply-form" id="reply-form-{{ $comment->id }}" style="display: none;">
+                            @csrf
+                            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                            <input type="hidden" name="post_type" value="landlord">
+                            <textarea name="content" placeholder="Viết phản hồi của bạn..." required></textarea>
+                            <div class="form-actions">
+                                <button type="submit" class="btn-submit">Gửi</button>
+                                <button type="button" class="btn-cancel"
+                                    onclick="toggleReplyForm({{ $comment->id }})">Hủy</button>
+                            </div>
+                        </form>
+                        @endauth
+
+                        <!-- Danh sách trả lời -->
+                        <div class="replies" id="replies-{{ $comment->id }}" style="display: none;">
+                            @foreach ($comment->replies->sortByDesc('created_at') as $reply)
+                            <div class="comment reply level-2">
+                                <div class="comment-header">
+                                    <div class="comment-author-info">
+                                        <strong>{{ $reply->user->name }}</strong>
+                                        <span class="comment-time">{{ $reply->created_at->diffForHumans()
+                                            }}</span>
+                                    </div>
+                                    @auth
+                                    @if (Auth::id() === $reply->user_id)
+                                    <button class="btn-action edit-btn"
+                                        onclick="toggleEditForm({{ $reply->id }}, event)">
+                                        <i class="fas fa-edit"></i> Chỉnh sửa
+                                    </button>
+                                    @endif
+                                    @endauth
+                                </div>
+
+                                <div class="comment-content" id="comment-text-{{ $reply->id }}">
+                                    @if($reply->parent->user_id !== $reply->user_id)
+                                    <span class="reply-to">Trả lời {{ $reply->parent->user->name }}</span><br>
+                                    @endif
+                                    {{ $reply->content }}
+                                </div>
+
+                                @auth
+                                @if (Auth::id() === $reply->user_id)
+                                <form action="{{ route('customer.comments.update', $reply->id) }}" method="POST"
+                                    class="edit-form" id="edit-form-{{ $reply->id }}" style="display: none;">
+                                    @csrf
+                                    @method('PUT')
+                                    <textarea name="content" required>{{ $reply->content }}</textarea>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-submit">Lưu</button>
+                                        <button type="button" class="btn-cancel"
+                                            onclick="toggleEditForm({{ $reply->id }}, event)">Hủy</button>
+                                    </div>
+                                </form>
+                                @endif
+                                @endauth
+
+                                <!-- Nút trả lời cho reply -->
+                                <div class="reply-actions">
+                                    @auth
+                                    <button class="btn-action reply-btn" onclick="toggleReplyForm({{ $reply->id }})">
+                                        <i class="fas fa-reply"></i> Trả lời
+                                    </button>
+                                    @endauth
+
+                                    @if ($reply->replies->count() > 0)
+                                    <button class="btn-action toggle-replies" onclick="toggleReplies({{ $reply->id }})"
+                                        id="toggle-btn-{{ $reply->id }}">
+                                        <i class="fas fa-comments"></i>
+                                        <span class="toggle-text">Xem {{ $reply->replies->count() }} phản hồi</span>
+                                        <i class="fas fa-chevron-down toggle-icon"></i>
+                                    </button>
+                                    @endif
+                                </div>
+
+                                <!-- Form trả lời cho reply -->
+                                @auth
+                                <form action="{{ route('customer.comments.store', $post->id) }}" method="POST"
+                                    class="reply-form" id="reply-form-{{ $reply->id }}" style="display: none;">
+                                    @csrf
+                                    <input type="hidden" name="parent_id" value="{{ $reply->id }}">
+                                    <input type="hidden" name="post_type" value="landlord">
+                                    <textarea name="content" placeholder="Viết phản hồi của bạn..." required></textarea>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn-submit">Gửi</button>
+                                        <button type="button" class="btn-cancel"
+                                            onclick="toggleReplyForm({{ $reply->id }})">Hủy</button>
+                                    </div>
+                                </form>
+                                @endauth
+                                <!-- Danh sách trả lời của reply (level 3) -->
+                                <div class="replies level-3-replies" id="replies-{{ $reply->id }}"
+                                    style="display: none;">
+                                    @foreach ($reply->replies->sortByDesc('created_at') as $replyLevel3)
+                                    <div class="comment reply level-3">
+                                        <div class="comment-header">
+                                            <div class="comment-author-info">
+                                                <strong>{{ $replyLevel3->user->name }}</strong>
+                                                <span class="comment-time">{{
+                                                    $replyLevel3->created_at->diffForHumans() }}</span>
+                                            </div>
+                                            @auth
+                                            @if (Auth::id() === $replyLevel3->user_id)
+                                            <button class="btn-action edit-btn"
+                                                onclick="toggleEditForm({{ $replyLevel3->id }}, event)">
+                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                            </button>
+                                            @endif
+                                            @endauth
+                                        </div>
+
+                                        <div class="comment-content" id="comment-text-{{ $replyLevel3->id }}">
+                                            @if($replyLevel3->parent->user_id !== $replyLevel3->user_id)
+                                            <span class="reply-to">Trả lời {{ $replyLevel3->parent->user->name
+                                                }}</span><br>
+                                            @endif
+                                            {{ $replyLevel3->content }}
+                                        </div>
+
+                                        <!-- FORM EDIT cho reply level 3 -->
+                                        @auth
+                                        @if (Auth::id() === $replyLevel3->user_id)
+                                        <form action="{{ route('customer.comments.update', $replyLevel3->id) }}"
+                                            method="POST" class="edit-form" id="edit-form-{{ $replyLevel3->id }}"
+                                            style="display: none;">
+                                            @csrf
+                                            @method('PUT')
+                                            <textarea name="content" required>{{ $replyLevel3->content }}</textarea>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn-submit">Lưu</button>
+                                                <button type="button" class="btn-cancel"
+                                                    onclick="toggleEditForm({{ $replyLevel3->id }}, event)">Hủy</button>
+                                            </div>
+                                        </form>
+                                        @endif
+                                        @endauth
+                                        {{--
+                                        <!-- Nút trả lời cho reply level 3 (không hiển thị thêm nút xem phản hồi) -->
+                                        <div class="reply-actions">
+                                            @auth
+                                            @if (auth()->user()->role === 'landlord' && $replyLevel3->user->role
+                                            === 'customer')
+                                            <button class="btn-action reply-btn"
+                                                onclick="toggleReplyForm({{ $replyLevel3->id }})">
+                                                <i class="fas fa-reply"></i> Trả lời
+                                            </button>
+                                            @endif
+                                            @endauth
+                                        </div>
+
+                                        <!-- Form trả lời cho reply level 3 -->
+                                        @auth
+                                        @if (auth()->user()->role === 'landlord' && $replyLevel3->user->role ===
+                                        'customer')
+                                        <form action="{{ route('landlord.comments.store', $post->id) }}" method="POST"
+                                            class="reply-form" id="reply-form-{{ $replyLevel3->id }}"
+                                            style="display: none;">
+                                            @csrf
+                                            <input type="hidden" name="parent_id" value="{{ $replyLevel3->id }}">
+                                            <input type="hidden" name="post_type" value="landlord">
+                                            <input type="hidden" name="reply_to" value="{{ $replyLevel3->user->name }}">
+                                            <textarea name="content" placeholder="Viết phản hồi của bạn..."
+                                                required></textarea>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn-submit">Gửi</button>
+                                                <button type="button" class="btn-cancel"
+                                                    onclick="toggleReplyForm({{ $replyLevel3->id }})">Hủy</button>
+                                            </div>
+                                        </form>
+                                        @endif
+                                        @endauth --}}
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -175,14 +360,13 @@
             <div class="profile-landord">
                 <div><img class="avatar" src="{{ asset('assets/image/customer02.jpg') }}" alt=""></div>
                 <div class="infor">
-                    <h2>Landord name</h2>
+                    <h2>{{ $post->user->name }}</h2>
                     <div class="address">
                         <div>
                             <button class="zalo">Nhắn tin ngay</button>
                         </div>
-                        <button class="phone">Phone number: 0938 045 JQK</button>
+                        <button class="phone">Phone number: {{ $post->user->phone ?? 'Chưa cập nhật' }}</button>
                     </div>
-
                 </div>
             </div>
             <div class="warning">
@@ -190,12 +374,8 @@
             </div>
         </div>
     </div>
-
 </div>
 
-
-{{--
-<meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 <!-- Nhúng Google Maps API -->
 @if ($post->latitude && $post->longitude)
 <script async defer
@@ -203,77 +383,169 @@
 </script>
 <script>
     function initMap() {
-            console.log("initMap called");
-            var postLocation = { lat: parseFloat("{{ $post->latitude }}"), lng: parseFloat("{{ $post->longitude }}") };
-            console.log("Post Location:", postLocation);
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: postLocation
-            });
-            var marker = new google.maps.Marker({
-                position: postLocation,
-                map: map
-            });
-        }
-        
-    //yeu thich
-        document.addEventListener("DOMContentLoaded", function () {
-    let buttons = document.querySelectorAll('.favorite-btn');
-    console.log("Number of buttons found:", buttons.length); // Kiểm tra số lượng nút được tìm thấy
+        var postLocation = { lat: parseFloat("{{ $post->latitude }}"), lng: parseFloat("{{ $post->longitude }}") };
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: postLocation
+        });
+        var marker = new google.maps.Marker({
+            position: postLocation,
+            map: map
+        });
+    }
+    
+    // Toggle favorite
+    async function toggleFavorite(event) {
+        const button = event.currentTarget;
+        const postId = button.getAttribute('data-post-id');
+        const postType = button.getAttribute('data-post-type');
+        const icon = button.querySelector('i');
 
-    buttons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            console.log("Button clicked!"); // Kiểm tra xem sự kiện click có hoạt động không
-            event.stopPropagation(); // Ngăn sự kiện click trên phần tử cha
-
-            let postId = this.getAttribute('data-post-id');
-            let icon = this.querySelector('i');
-
-            if (!icon) {
-                console.error("Icon element not found!");
-                return;
-            }
-
-            console.log("Post ID:", postId);
-            console.log("Icon element:", icon);
-
-            fetch("{{ route('customer.detail.toggleFavorite') }}", {
+        try {
+            const response = await fetch("{{ route('customer.detail.toggleFavorite') }}", {
                 method: "POST",
                 headers: {
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                    "Content-Type": "application/json"
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
-                body: JSON.stringify({ post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Response:", data); // Kiểm tra phản hồi từ server
-                if (data.status === "added") {
-                    icon.style.color = "red"; // Chuyển màu đỏ khi yêu thích
-                } else if (data.status === "removed") {
-                    icon.style.color = "gray"; // Chuyển màu xám khi bỏ yêu thích
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    });
-});
+                body: JSON.stringify({ 
+                    post_id: postId,
+                    post_type: postType
+                })
+            });
 
-//comment
-function toggleReplyForm(commentId) {
-        var form = document.getElementById("reply-form-" + commentId);
-        form.style.display = (form.style.display === "none") ? "block" : "none";
+            const data = await response.json();
+            
+            if (data.status === "added") {
+                icon.style.color = "red";
+            } else if (data.status === "removed") {
+                icon.style.color = "gray";
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
+    // Comment functions
+ // Hàm toggle reply form
+ function toggleReplyForm(commentId) {
+        var form = document.getElementById("reply-form-" + commentId);
+        if (form.style.display === "none" || form.style.display === "") {
+            // Ẩn tất cả các form reply khác
+            document.querySelectorAll('.reply-form').forEach(function(f) {
+                if (f.id !== 'reply-form-' + commentId) f.style.display = 'none';
+            });
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+
+    function toggleEditForm(commentId, event = null) {
+    // Ngăn chặn hành vi mặc định nếu có event
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    console.log('Toggle edit form for comment:', commentId);
+    
+    // Ẩn tất cả các form edit và reply khác
+    document.querySelectorAll('.edit-form, .reply-form').forEach(form => {
+        if (form.id !== 'edit-form-' + commentId) {
+            form.style.display = 'none';
+        }
+    });
+    
+    // Toggle form hiện tại
+    const form = document.getElementById('edit-form-' + commentId);
+    if (form) {
+        form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        
+        // Focus vào textarea nếu form được hiển thị
+        if (form.style.display === 'block') {
+            const textarea = form.querySelector('textarea');
+            if (textarea) {
+                textarea.focus();
+                // Đặt cursor ở cuối nội dung
+                textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+            }
+        }
+    } else {
+        console.error('Form not found with ID:', 'edit-form-' + commentId);
+    }
+}
+
+    // Hàm toggle replies
     function toggleReplies(commentId) {
         var repliesDiv = document.getElementById("replies-" + commentId);
-        repliesDiv.style.display = (repliesDiv.style.display === "none") ? "block" : "none";
+        var toggleBtn = document.getElementById("toggle-btn-" + commentId);
+        var toggleIcon = toggleBtn.querySelector('.toggle-icon');
+        var toggleText = toggleBtn.querySelector('.toggle-text');
+        
+        if (repliesDiv.style.display === "none" || repliesDiv.style.display === "") {
+            repliesDiv.style.display = "block";
+            toggleText.textContent = "Thu nhỏ";
+            toggleIcon.classList.remove('fa-chevron-down');
+            toggleIcon.classList.add('fa-chevron-up');
+        } else {
+            repliesDiv.style.display = "none";
+            toggleText.textContent = "Xem " + repliesDiv.querySelectorAll('.reply').length + " phản hồi";
+            toggleIcon.classList.remove('fa-chevron-up');
+            toggleIcon.classList.add('fa-chevron-down');
+        }
     }
 
-    function toggleEditForm(commentId) {
-        var form = document.getElementById("edit-form-" + commentId);
-        form.style.display = (form.style.display === "none") ? "block" : "none";
+
+    // chia sẻ
+    // Thêm vào phần script
+function copyToClipboard(text) {
+    // Tạo một textarea tạm thời
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';  // Để tránh hiển thị lệch
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        // Thực hiện copy
+        document.execCommand('copy');
+        return true;
+    } catch (err) {
+        console.error('Lỗi khi sao chép:', err);
+        return false;
+    } finally {
+        // Xóa textarea tạm
+        document.body.removeChild(textarea);
     }
+}
+
+// Xử lý sự kiện click nút chia sẻ
+document.querySelectorAll('.share-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const url = this.getAttribute('data-url');
+        if (copyToClipboard(url)) {
+            // Hiệu ứng khi sao chép thành công
+            this.classList.add('copied');
+            const originalClass = this.className;
+            
+            // Đổi icon tạm thời
+            this.classList.remove('fa-share-alt');
+            this.classList.add('fa-check');
+            
+            // Reset sau 2 giây
+            setTimeout(() => {
+                this.className = originalClass;
+                this.classList.remove('copied');
+            }, 2000);
+            
+            // Thông báo (tuỳ chọn)
+            alert('Đã sao chép liên kết bài đăng!');
+        }
+    });
+});
 </script>
 @endif
 

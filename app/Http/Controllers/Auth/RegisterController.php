@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -16,7 +17,6 @@ class RegisterController extends Controller
     {
         return view('account.register');
     }
-
 
     public function register(Request $request)
     {
@@ -28,9 +28,10 @@ class RegisterController extends Controller
                 'password' => 'required|string|min:8|confirmed',
                 'phone' => 'required|string|max:20',
                 'role' => 'required|in:renter,landlord',
+                'terms' => 'required|accepted',
             ]);
 
-            // Xử lý dữ liệu tùy theo role  
+            // Xử lý dữ liệu tùy theo role
             if ($request->role === 'renter') {
                 $request->validate([
                     'city' => 'required|string|max:255',
@@ -61,23 +62,24 @@ class RegisterController extends Controller
                 'proof' => $proofPath,
             ]);
 
-            // Gửi email xác nhận
-            $user->sendEmailVerificationNotification();
+            // Kích hoạt sự kiện Registered để gửi email xác nhận (không chặn phản hồi)
+            event(new Registered($user));
 
             // Đăng nhập người dùng ngay sau khi đăng ký
             Auth::login($user);
 
-
+            // Phản hồi nhanh chóng
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Đăng ký thành công! Vui lòng kiểm tra email để xác nhận.',
+                    'redirect' => '/email/verify',
                 ]);
             }
+
             // Chuyển hướng về trang xác minh email
             return redirect('/email/verify')->with('success', 'Đăng ký thành công! Vui lòng kiểm tra email.');
         } catch (\Exception $e) {
-            // Trả về JSON khi có lỗi
             Log::error('Lỗi khi đăng ký người dùng: ' . $e->getMessage());
             return response()->json([
                 'success' => false,

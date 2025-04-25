@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/landlord/create_posts.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/landlord/post.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/landlord/detail_post.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/landlord/message.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/landord.js') }}"></script>
@@ -50,7 +51,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="/landlord/chat">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
@@ -86,13 +87,16 @@
                 </li>
 
                 <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title">Sign Out</span>
-                    </a>
-                </li>
+                    <form action="{{ route('logout') }}" method="POST" class="logout-form">
+                        @csrf
+                        <button type="submit" class="logout-button">
+                            <span class="icon">
+                                <ion-icon name="log-out-outline"></ion-icon>
+                            </span>
+                            <span class="title">Sign Out</span>
+                        </button>
+                    </form>
+                </li>   
             </ul>
         </div>
 
@@ -111,7 +115,7 @@
                 </div>
 
                 <div class="">
-                    {{-- <img src="assets/image/customer01.jpg" alt=""> --}}
+
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="btn btn-danger">Logout</button>

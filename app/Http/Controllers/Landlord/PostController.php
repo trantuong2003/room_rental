@@ -68,4 +68,23 @@ class PostController extends Controller
         }
         return view('landord.detail_post', compact('post'));
     }
+    // {
+    //     $post = LandlordPost::with(['images', 'comments.user'])->findOrFail($id);
+    //     $userId = Auth::id();
+        
+    //     // Kiểm tra favorite (nếu cần)
+    //     $post->isFavorited = Favorite::where('user_id', $userId)
+    //         ->where('favoriteable_id', $post->id)
+    //         ->where('favoriteable_type', LandlordPost::class)
+    //         ->exists();
+
+    //     // Thêm type để phân biệt
+    //     $post->type = 'landlord';
+
+    //     if (!$post->latitude || !$post->longitude) {
+    //         $this->setPostLocation($post);
+    //     }
+
+    //     return view('landord.detail_post', compact('post'));
+    // }
 }

@@ -7,7 +7,6 @@
   font-family: "Poppins", sans-serif;
 }
 body {
-  /* min-height: 100vh; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,8 +21,6 @@ body {
   padding: 25px;
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  /* max-height: 700px;
-  height: 100%; */
 }
 .container header {
   font-size: 1.5rem;
@@ -113,6 +110,10 @@ body {
 .form button:hover {
   background: rgb(88, 56, 250);
 }
+.form button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 
 .hidden {
   display: none;
@@ -154,9 +155,39 @@ body {
   background: rgb(88, 56, 250);
 }
 
+.terms-box {
+  margin-top: 15px;
+}
 
+.terms {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
 
-/*Responsive*/
+.terms input[type="checkbox"] {
+  accent-color: rgb(130, 106, 251);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.terms label {
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.terms a {
+  color: rgb(130, 106, 251);
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
 @media screen and (max-width: 500px) {
   .form .column {
     flex-wrap: wrap;
@@ -164,4 +195,35 @@ body {
   .form :where(.gender-option, .gender) {
     row-gap: 15px;
   }
+}
+
+/*mat xem mk*/
+
+/* Password container with eye icon */
+.password-container {
+  position: relative;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* Tạo khoảng trống cho icon */
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(50%);
+  cursor: pointer;
+  color: #aaa;
+  z-index: 2;
+}
+
+.eye-icon:hover {
+  color: #555;
+}
+
+/* Đảm bảo các input box khác không bị ảnh hưởng */
+.input-box:not(.password-container) input {
+  padding-right: 15px;
 }

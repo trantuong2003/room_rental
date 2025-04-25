@@ -42,14 +42,26 @@ class LandlordPost extends Model
         return $this->hasMany(LandlordPostImage::class, 'landlord_post_id');
     }
 
-    public function favoritedBy()
+    // public function favoritedBy()
+    // {
+    //     return $this->hasMany(Favorite::class, 'post_id');
+    // }
+
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class, 'post_id')->whereNull('parent_id')->latest();
+    // }
+
+    // Quan hệ lượt thích (Polymorphic)
+    public function favoritedby()
     {
-        return $this->hasMany(Favorite::class, 'post_id');
+        return $this->morphMany(Favorite::class, 'favoriteable');
     }
 
+    // Quan hệ bình luận (Polymorphic)
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'post_id')->whereNull('parent_id')->latest();
+        return $this->morphMany(Comment::class, 'commentable');
     }
     /**
      * Tạo bài đăng mới và giảm số lượt đăng bài còn lại.
