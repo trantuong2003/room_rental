@@ -37,25 +37,32 @@ class FavoritePostController extends Controller
 
     public function toggleFavorite(Request $request)
     {
-        $postId = $request->input('post_id');
-        $user = Auth::user();
+        $request->validate([
+            'post_id' => 'required|integer',
+            'post_type' => 'required|in:landlord,customer'
+        ]);
 
-        // Kiểm tra xem bài đăng đã được yêu thích chưa
-        $favorite = Favorite::where('user_id', $user->id)
-            ->where('post_id', $postId)
+        $userId = Auth::id();
+        $postId = $request->post_id;
+        $postType = $request->post_type;
+        
+        $model = $postType === 'landlord' ? LandlordPost::class : CustomerPost::class;
+    
+        $favorite = Favorite::where('user_id', $userId)
+            ->where('favoriteable_id', $postId)
+            ->where('favoriteable_type', $model)
             ->first();
-
+    
         if ($favorite) {
-            // Nếu đã yêu thích, xóa khỏi danh sách yêu thích
             $favorite->delete();
             return response()->json(['status' => 'removed']);
         } else {
-            // Nếu chưa yêu thích, thêm vào danh sách yêu thích
             Favorite::create([
-                'user_id' => $user->id,
-                'post_id' => $postId,
+                'user_id' => $userId,
+                'favoriteable_id' => $postId,
+                'favoriteable_type' => $model
             ]);
             return response()->json(['status' => 'added']);
         }
-    }
+}
 }

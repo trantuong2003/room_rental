@@ -87,18 +87,7 @@ class ListPostCustomerController extends Controller
         $comment->parent_id = $request->parent_id;
         $comment->save();
 
-        return response()->json([
-            'status' => 'success',
-            'comment' => [
-                'id' => $comment->id,
-                'content' => $comment->content,
-                'user_name' => Auth::user()->name,
-                'user_avatar' => Auth::user()->avatar_url ?? asset('images/default-avatar.png'),
-                'created_at' => $comment->created_at->diffForHumans(),
-                'is_owner' => true
-            ],
-            'comments_count' => $post->comments()->count()
-        ]);
+        return redirect()->route('customer.roommates.index');
      }
  
      public function updateComment(Request $request, $commentId)
@@ -114,12 +103,6 @@ class ListPostCustomerController extends Controller
          $comment->content = $request->content;
          $comment->save();
  
-         return response()->json([
-             'status' => 'success',
-             'comment' => [
-                 'id' => $comment->id,
-                 'content' => $comment->content
-             ]
-         ]);
+         return redirect()->route('customer.roommates.index');
      }
 }

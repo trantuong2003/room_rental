@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\ModerationPostController;
 use App\Http\Controllers\Admin\PostApprovalCustomerController;
+use \App\Http\Controllers\Admin\BannedWordController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Landlord\PackageController;
 use App\Http\Controllers\Landlord\PaymentController;
@@ -87,12 +88,20 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
             Route::put('/{post}', [CustomerPostController::class, 'update'])->name('customer.roommates.update'); // Cập nhật bài đăng
             Route::delete('/{post}', [CustomerPostController::class, 'destroy'])->name('customer.roommates.destroy'); // Xóa bài đăng
 
-            // Route bình luận cho bài đăng customer (roommates)
-            Route::post('/{post}/comments', [CommentController::class, 'store'])->name('customer.roommates.comments.store');
-            Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('customer.roommates.comments.update');
+            // // Route bình luận cho bài đăng customer (roommates)
+            // Route::post('/{post}/comments', [CommentController::class, 'store'])->name('customer.roommates.comments.store');
+            // Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('customer.roommates.comments.update');
 
-            // Toggle like cho bài đăng roommates
-            Route::post('/{post}/toggle-like', [CustomerPostController::class, 'toggleLike'])->name('customer.roommates.toggleLike');
+            // // Toggle like cho bài đăng roommates
+            // Route::post('/{post}/toggle-like', [CustomerPostController::class, 'toggleLike'])->name('customer.roommates.toggleLike');
+
+            // Like và comment chỉ cho customer posts
+            Route::post('/toggle-favorite', [CustomerPostController::class, 'toggleFavorite'])
+                ->name('customer.roommates.toggleFavorite');
+            Route::post('/{post}/comments', [CustomerPostController::class, 'storeComment'])
+                ->name('customer.roommates.comments.store');
+            Route::put('/comments/{comment}', [CustomerPostController::class, 'updateComment'])
+                ->name('customer.roommates.comments.update');
         });
 
         //nhan tin
@@ -105,11 +114,11 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
         });
 
 
-        // Route xử lý thích bài đăng
+        // Route xử lý thích bài đăng cong dong
         Route::post('/toggle-favorite-customer-post', [ListPostCustomerController::class, 'toggleFavorite'])
             ->name('customer.post.favorite.toggleFavorite');
 
-        // Route xử lý bình luận
+        // Route xử lý bình luận cong dong
         Route::post('/{post}/comments/customer-post', [ListPostCustomerController::class, 'storeComment'])
             ->name('customer.post.comments.store');
         Route::put('/comments/{comment}/customer-post', [ListPostCustomerController::class, 'updateComment'])
@@ -143,6 +152,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/moderation/customer/post', [PostApprovalCustomerController::class, 'index'])->name('moderation.customer.index');
         Route::post('/moderation/customer/posts/{id}/approve', [PostApprovalCustomerController::class, 'approve'])->name('moderation.customer.approve');
         Route::post('/moderation/customer/posts/{id}/reject', [PostApprovalCustomerController::class, 'reject'])->name('moderation.customer.reject');
+
+        // Banned words
+        Route::get('/banned-words', [BannedWordController::class, 'index'])->name('banned-words.index');
+        Route::get('/api/banned-words', [BannedWordController::class, 'getBannedWords']);
+        Route::post('/api/banned-words', [BannedWordController::class, 'store']);
+        Route::get('/banned-words/{id}/edit', [BannedWordController::class, 'edit']);
+        Route::put('/api/banned-words/{id}', [BannedWordController::class, 'update']);
+        Route::delete('/api/banned-words/{id}', [BannedWordController::class, 'destroy']);
     });
 });
 

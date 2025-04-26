@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/admin/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/subscription.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/moderation_post.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/banned_word.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/approval_customer_post.css') }}">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/admin.js') }}"></script>

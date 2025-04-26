@@ -1,467 +1,307 @@
+.list-post-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
 
-    /* Container căn giữa màn hình */
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 30px 20px;
+.post-find-roommate {
+    background: white;
+    padding: 20px;
+    width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.post-find-roommate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.post-find-roommate-header h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.post-find-roommate-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+}
+
+.post-find-roommate-content h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.post-find-roommate-content p {
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.post-find-roommate-actions {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    margin-top: 15px;
+}
+
+.post-find-roommate-actions button,
+.post-find-roommate-actions a,
+.post-find-roommate-actions .delete-form {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #65676b;
+    font-size: 14px;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.post-find-roommate-actions button:hover,
+.post-find-roommate-actions a:hover {
+    background-color: #f0f2f5;
+}
+
+.post-find-roommate-actions i {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.btn-edit {
+    color: #4299e1;
+}
+
+.btn-delete {
+    color: #e53e3e;
+}
+
+.like-btn.active i {
+    color: #1877f2;
+}
+
+.comment-toggle.active {
+    color: #1877f2;
+}
+
+/* Comment section */
+.post-comments-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    display: none;
+}
+
+.post-comment-form {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.comment-avatar {
+    margin-right: 12px;
+}
+
+.comment-avatar i {
+    font-size: 36px;
+    color: #718096;
+}
+
+.post-comment-form form {
+    flex-grow: 1;
+}
+
+.post-comment-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.submit-comment {
+    background-color: #4299e1;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.login-to-comment {
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.login-to-comment a {
+    color: #4299e1;
+    text-decoration: none;
+}
+
+/* Comment list */
+.post-comments-list {
+    margin-top: 20px;
+}
+
+.post-comment {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.post-comment .comment-avatar i {
+    font-size: 36px;
+    color: #718096;
+}
+
+.comment-content-wrapper {
+    flex-grow: 1;
+}
+
+.comment-content-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.comment-author {
+    font-weight: 600;
+    font-size: 15px;
+    margin-right: 12px;
+    color: #2d3748;
+}
+
+.comment-time {
+    font-size: 13px;
+    color: #718096;
+}
+
+.comment-text {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #4a5568;
+    margin-bottom: 10px;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.btn-reply,
+.btn-edit,
+.btn-view-replies {
+    background: none;
+    border: none;
+    color: #4299e1;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0;
+}
+
+.btn-view-replies .toggle-icon {
+    margin-left: 5px;
+    transition: transform 0.2s ease;
+}
+
+/* Comment forms */
+.comment-edit-form,
+.comment-reply-form {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.comment-edit-form textarea,
+.comment-reply-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    resize: vertical;
+    min-height: 60px;
+    margin-bottom: 10px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.comment-form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-submit {
+    background-color: #4299e1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    background: none;
+    border: 1px solid #e2e8f0;
+    color: #718096;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Replies */
+.comment-replies {
+    margin-top: 15px;
+    padding-left: 15px;
+    border-left: 2px solid #e2e8f0;
+}
+
+.post-comment.reply {
+    margin-left: 48px;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+    .post-find-roommate {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .post-find-roommate-actions {
+        flex-wrap: wrap;
+        gap: 5px;
     }
     
-    .list-post-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .post-find-roommate-actions button,
+    .post-find-roommate-actions a {
+        padding: 5px 10px;
+        font-size: 13px;
     }
-
-    /* ========== MAIN CONTAINER ========== */
-    .customer-roommate-posts {
-        width: 100%;
-    }
-
-    /* ========== HEADER ========== */
-    .customer-roommate-posts__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        position: relative;
-        z-index: 1;
-    }
-
-    .customer-roommate-posts__title {
+    
+    .post-comment .comment-avatar i {
         font-size: 28px;
-        font-weight: 700;
-        color: #2d3748;
-        margin: 0;
-        position: relative;
-        padding-bottom: 10px;
     }
-
-    .customer-roommate-posts__title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 60px;
-        height: 4px;
-        background: linear-gradient(90deg, #4299e1, #3182ce);
-        border-radius: 2px;
+    
+    .post-comment.reply {
+        margin-left: 30px;
     }
-
-    /* ========== BUTTONS ========== */
-    .customer-roommate-posts__new-post-btn {
-        background-color: #4299e1;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 6px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(66, 153, 225, 0.2);
-    }
-    .customer-roommate-posts__new-post-btn a{
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-weight: 500;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 5px rgba(66, 153, 225, 0.2);
-        text-decoration: none;
-    }
-
-    .customer-roommate-posts__new-post-btn:hover {
-        background-color: #3182ce;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(66, 153, 225, 0.3);
-    }
-
-    /* ========== POST CARD ========== */
-    .customer-roommate-post {
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        width: 800px;
-        margin-bottom: 25px;
-    }
-
-    .customer-roommate-post:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .customer-roommate-post__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 18px 20px;
-        border-bottom: 1px solid #edf2f7;
-    }
-
-    .customer-roommate-post__title {
-        margin: 0;
-        font-size: 18px;
-        color: #2d3748;
-        font-weight: 600;
-        flex-grow: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .customer-roommate-post__actions {
-        display: flex;
-        gap: 8px;
-    }
-
-    .customer-roommate-post__edit-btn,
-    .customer-roommate-post__delete-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 6px;
-        border-radius: 4px;
-        font-size: 16px;
-        transition: all 0.2s ease;
-    }
-
-    .customer-roommate-post__edit-btn {
-        color: #f6ad55;
-    }
-
-    .customer-roommate-post__edit-btn:hover {
-        color: #ed8936;
-        background-color: rgba(246, 173, 85, 0.1);
-    }
-
-    .customer-roommate-post__delete-btn {
-        color: #f56565;
-    }
-
-    .customer-roommate-post__delete-btn:hover {
-        color: #e53e3e;
-        background-color: rgba(245, 101, 101, 0.1);
-    }
-
-    .customer-roommate-post__content {
-        padding: 18px 20px;
-        flex-grow: 1;
-    }
-
-    .customer-roommate-post__content p {
-        margin: 0;
-        color: #4a5568;
-        line-height: 1.6;
-        font-size: 15px;
-    }
-
-    .customer-roommate-post__meta {
-        display: flex;
-        justify-content: flex-end;
-        padding: 14px 20px;
-        background-color: #f7fafc;
-        border-top: 1px solid #e2e8f0;
-        font-size: 14px;
-    }
-
-    .customer-roommate-post__status {
-        font-weight: 500;
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 13px;
-    }
-
-    .customer-roommate-post__status--active {
-        background-color: #c6f6d5;
-        color: #22543d;
-    }
-
-    .customer-roommate-post__status--inactive {
-        background-color: #fed7d7;
-        color: #822727;
-    }
-
-    .customer-roommate-post__stats {
-        display: flex;
-        justify-content: space-around;
-        padding: 14px 20px;
-        background-color: #f7fafc;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    .customer-roommate-post__stat {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: #4a5568;
-        font-size: 14px;
-        cursor: pointer;
-        transition: color 0.2s ease;
-    }
-
-    .customer-roommate-post__stat:hover {
-        color: #4299e1;
-    }
-
-    .customer-roommate-post__stat i {
-        font-size: 16px;
-    }
-
-    /* ========== COMMENTS SECTION ========== */
-    .customer-roommate-post__comments {
-        border-top: 1px solid #e2e8f0;
-        padding: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease, padding 0.3s ease;
-    }
-
-    .customer-roommate-post__comments--visible {
-        padding: 20px;
-        max-height: 1000px;
-    }
-
-    .customer-roommate-post__comment-form {
-        margin-bottom: 20px;
-    }
-
-    .customer-roommate-post__comment-form textarea {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        resize: vertical;
-        min-height: 80px;
-        margin-bottom: 12px;
-        font-family: inherit;
-        font-size: 14px;
-        transition: border-color 0.2s ease;
-    }
-
-    .customer-roommate-post__comment-form textarea:focus {
-        outline: none;
-        border-color: #4299e1;
-        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-    }
-
-    .customer-roommate-post__submit-comment {
-        background-color: #4299e1;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 6px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .customer-roommate-post__submit-comment:hover {
-        background-color: #3182ce;
-    }
-
-    /* ========== COMMENTS LIST ========== */
-    .customer-roommate-post__comments-list {
-        margin-top: 20px;
-    }
-
-    .customer-roommate-post__comment {
-        display: flex;
-        margin-bottom: 20px;
-    }
-
-    .customer-roommate-post__comment-avatar {
-        margin-right: 12px;
-    }
-
-    .customer-roommate-post__comment-avatar i {
-        font-size: 36px;
-        color: #718096;
-    }
-
-    .customer-roommate-post__comment-content {
-        flex-grow: 1;
-    }
-
-    .customer-roommate-post__comment-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 6px;
-    }
-
-    .customer-roommate-post__comment-author {
-        font-weight: 600;
-        font-size: 15px;
-        margin-right: 12px;
-        color: #2d3748;
-    }
-
-    .customer-roommate-post__comment-time {
-        font-size: 13px;
-        color: #718096;
-    }
-
-    .customer-roommate-post__comment-text {
-        font-size: 15px;
-        line-height: 1.5;
-        color: #4a5568;
-        margin-bottom: 10px;
-    }
-
-    .customer-roommate-post__comment-actions {
-        display: flex;
-        gap: 15px;
-    }
-
-    .customer-roommate-post__reply-btn,
-    .customer-roommate-post__view-replies {
-        background: none;
-        border: none;
-        color: #4299e1;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        padding: 0;
-        transition: color 0.2s ease;
-    }
-
-    .customer-roommate-post__reply-btn:hover,
-    .customer-roommate-post__view-replies:hover {
-        color: #3182ce;
-        text-decoration: underline;
-    }
-
-    /* ========== REPLIES ========== */
-    .customer-roommate-post__replies {
-        margin-top: 15px;
-        padding-left: 15px;
-        border-left: 2px solid #e2e8f0;
-        display: none;
-    }
-
-    .customer-roommate-post__replies--visible {
-        display: block;
-    }
-
-    .customer-roommate-post__reply {
-        display: flex;
-        margin-bottom: 15px;
-    }
-
-    /* ========== REPLY FORM ========== */
-    .customer-roommate-post__reply-form {
-        margin-top: 15px;
-        padding-left: 48px;
-        display: none;
-    }
-
-    .customer-roommate-post__reply-form--visible {
-        display: block;
-    }
-
-    .customer-roommate-post__reply-form textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
-        resize: vertical;
-        min-height: 60px;
-        margin-bottom: 10px;
-        font-family: inherit;
-        font-size: 14px;
-    }
-
-    .customer-roommate-post__reply-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .customer-roommate-post__submit-reply {
-        background-color: #4299e1;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 6px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    .customer-roommate-post__submit-reply:hover {
-        background-color: #3182ce;
-    }
-
-    .customer-roommate-post__cancel-reply {
-        background: none;
-        border: 1px solid #e2e8f0;
-        color: #718096;
-        padding: 8px 16px;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .customer-roommate-post__cancel-reply:hover {
-        background-color: #f7fafc;
-    }
-
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 850px) {
-        .customer-roommate-post {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .container {
-            padding: 20px 15px;
-        }
-
-        .customer-roommate-posts__header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
-
-        .customer-roommate-post__comment-avatar i {
-            font-size: 32px;
-        }
-
-        .customer-roommate-post__reply-form {
-            padding-left: 40px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .customer-roommate-posts__title {
-            font-size: 24px;
-        }
-
-        .customer-roommate-post__header,
-        .customer-roommate-post__content,
-        .customer-roommate-post__meta {
-            padding: 15px;
-        }
-
-        .customer-roommate-post__stats {
-            padding: 12px 15px;
-        }
-
-        .customer-roommate-post__comment-avatar {
-            margin-right: 10px;
-        }
-
-        .customer-roommate-post__comment-avatar i {
-            font-size: 28px;
-        }
-    }
-
+}
