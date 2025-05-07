@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\LandlordPost;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LandlordPostImage;
-
+use Illuminate\Support\Facades\Storage;
 class CreatePostController extends Controller
 {
 
@@ -108,10 +108,35 @@ class CreatePostController extends Controller
         return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng đã được cập nhật thành công!');
     }
 
+    public function deleteImages($postId)
+    {
+        $post = LandlordPost::findOrFail($postId);
+    
+        // Kiểm tra quyền truy cập - chỉ chủ bài đăng mới được xóa
+        if ($post->user_id !== Auth::id()) {
+            return redirect()->back()->with('error', 'You are not authorized to delete these images.');
+        }
+    
+        // Xóa tất cả hình ảnh liên quan
+        foreach ($post->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+    
+        return redirect()->route('landlord.posts.edit', $postId)->with('success', 'All images of the post have been deleted successfully!');
+    }
     public function destroy($id)
     {
+        // \Log::info('destroy được gọi cho bài đăng ID: ' . $id);
         $post = LandlordPost::findOrFail($id);
+    
+        foreach ($post->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
+            $image->delete();
+        }
+    
         $post->delete();
-        return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng đã được xóa thành công!');
+    
+        return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng và các ảnh đã được xóa thành công!');
     }
 }

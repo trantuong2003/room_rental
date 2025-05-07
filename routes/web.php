@@ -10,7 +10,10 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\ModerationPostController;
 use App\Http\Controllers\Admin\PostApprovalCustomerController;
-use \App\Http\Controllers\Admin\BannedWordController;
+use App\Http\Controllers\Admin\BannedWordController;
+use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\Landlord\PackageController;
 use App\Http\Controllers\Landlord\PaymentController;
@@ -54,33 +57,52 @@ use App\Http\Controllers\Customer\CommentCustomerPost;
 
 
 
+// 👉 Các route cho phép KHÁCH xem (không cần đăng nhập)
+Route::prefix('customer')->group(function () {
+    Route::get('/', [HomeCustomerController::class, 'home'])->name('customer.home');
+
+    Route::prefix('posts')->group(function () {
+        Route::get('/detail/{id}', [DetailPostController::class, 'detailPost'])->name('customer.post.detail');
+    });
+
+    Route::prefix('post/roommates')->group(function () {
+        Route::get('/', [ListPostCustomerController::class, 'index'])->name('customer.roommates.index'); // Danh sách bài đăng
+    });
+});
+
 
 /* router of customer*/
 
 Route::middleware(['auth.customer', 'verified'])->group(function () {
     Route::prefix('customer')->group(function () {
-        Route::get('/', [HomeCustomerController::class, 'home'])->name('customer.home');
-
+        Route::get('/nearby-posts', [HomeCustomerController::class, 'nearbyPosts'])->name('customer.post.nearby');
         //post rental room
         Route::prefix('posts')->group(function () {
-            Route::get('/detail/{id}', [DetailPostController::class, 'detailPost'])->name('customer.post.detail');
+
             Route::post('/toggle-favorite-home', [HomeCustomerController::class, 'toggleFavorite'])->name('customer.post.toggleFavorite');
             Route::post('/toggle-favorite-detail', [DetailPostController::class, 'toggleFavorite'])->name('customer.detail.toggleFavorite');
 
 
-            Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
-            Route::post('/toggle-favorite-detail-page', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
+            // Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
+            // Route::post('/toggle-favorite-detail-page', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
 
             // Route::post('/{post}/toggle-favorite-customer-post', [FavoritePostController::class, 'toggleFavorite'])->name('customer.post.toggleFavorite');
 
             // 👉 Route để bình luận (customer)
             Route::post('/{post}/comments', [CommentController::class, 'store'])->name('customer.comments.store');
             Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('customer.comments.update');
+
+
+            // Route cho trang favourite
+            Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
+            Route::post('/toggle-favorite', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
+            Route::post('/{post}/comments/store', [FavoritePostController::class, 'storeComment'])->name('customer.favorite.comments.store');
+            Route::put('/comments/{comment}/update', [FavoritePostController::class, 'updateComment'])->name('customer.favorite.comments.update');
         });
 
         //post find roommate
         Route::prefix('post/roommates')->group(function () {
-            Route::get('/', [ListPostCustomerController::class, 'index'])->name('customer.roommates.index'); // Danh sách bài đăng
+
             Route::get('/history', [CustomerPostController::class, 'history'])->name('customer.roommates.history'); // lịch sử bài đăng
             Route::get('/create', [CustomerPostController::class, 'create'])->name('customer.roommates.create'); // Trang tạo bài đăng
             Route::post('/', [CustomerPostController::class, 'store'])->name('customer.roommates.store'); // Lưu bài đăng
@@ -131,9 +153,10 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
 /* router of admin*/
 Route::middleware('auth')->group(function () {
     Route::prefix('admin')->middleware('auth.admin')->group(function () {
-        Route::get('/', function () {
-            return view('admin.dashbroad');
-        });
+        Route::get('/', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('/transactions', [AdminDashboardController::class, 'transactionHistory'])->name('admin.transactions');
+        //account
+        Route::get('/account/profile', [AccountController::class, 'profile'])->name('account.profile');
 
         //subscription package
         Route::get('/subscription', [SubscriptionController::class, 'index'])->name('subscriptions.index');
@@ -189,7 +212,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/{id}/edit', [CreatePostController::class, 'edit'])->name('landlord.posts.edit');
             Route::put('/{id}', [CreatePostController::class, 'update'])->name('landlord.posts.update');
             Route::delete('/{id}', [CreatePostController::class, 'destroy'])->name('landlord.posts.destroy');
-
+            Route::delete('/{postId}/images', [CreatePostController::class, 'deleteImages'])->name('landlord.posts.images.delete'); //xóa ảnh trong edit
             // 👉 Route để bình luận (landlord)
             Route::post('/{post}/comments', [CommentController::class, 'store'])->name('landlord.comments.store');
             Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('landlord.comments.update');

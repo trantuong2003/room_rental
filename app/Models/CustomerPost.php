@@ -14,6 +14,7 @@ class CustomerPost extends Model
         'title',
         'content',
         'status',
+        'rejection_reason',
         'approved_at'
     ];
 

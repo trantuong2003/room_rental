@@ -4,10 +4,11 @@
     padding: 20px;
 }
 
-/* detail*/
+/* detail layout */
 .layout {
     display: flex;
-    gap: 20px;
+    gap: 30px;
+    background-color: #f5f7fa;
 }
 .left-section {
     flex: 2;
@@ -15,208 +16,525 @@
 .right-section {
     flex: 1;
 }
+
+/* Main image styling */
 .main-image img {
     width: 100%;
-    height: 320px;
+    height: 400px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
+
+.main-image img:hover {
+    transform: scale(1.02);
+}
+
+/* Thumbnails - single row layout */
 .thumbnails {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    flex-wrap: nowrap;
+    gap: 12px;
+    margin-top: 15px;
+    position: relative;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
 }
+
+.thumbnails::-webkit-scrollbar {
+    height: 6px;
+}
+
+.thumbnails::-webkit-scrollbar-track {
+    background: #e0e5eb;
+    border-radius: 10px;
+}
+
+.thumbnails::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.thumbnails::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .thumbnails img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
     object-fit: cover;
     border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.profile-landord {
+
+.thumbnails img:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* See more overlay */
+.see-more-overlay {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 16px;
-    background-color: #fff;
-    padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
-.sticky {
-    position: sticky;
-    top: 20px;
+
+.see-more-overlay:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
-.avatar {
-    width: 48px;
-    height: 48px;
-    background-color: #e5e7eb;
+
+.see-more-overlay span {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.see-more-overlay p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Improved Modal Design with consistent image sizes */
+.image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #2d3748;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    background: rgba(220, 38, 38, 0.8);
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-.infor button {
-    display: block;
-    margin-top: 8px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-}
-.zalo {
-    background-color: #3b82f6;
-}
-.phone {
-    background-color: #10b981;
-}
-.warning {
-    background-color: #f3f4f6;
-    padding: 16px;
-    border-radius: 8px;
-    margin-top: 16px;
-    color: #ef4444;
+    transition: background 0.3s ease;
+    z-index: 1001;
 }
 
-.value {
-    font-size: 18px;
-    font-weight: bold;
+.close:hover {
+    background: rgba(220, 38, 38, 1);
 }
-.header {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-.sub-header {
-    color: #666;
-    margin-bottom: 20px;
-}
-.info {
+
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 500px; /* Fixed height for consistency */
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Maintain aspect ratio without cropping */
+    border-radius: 8px;
+}
+
+.carousel-control {
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+    z-index: 1001;
+}
+
+.carousel-control:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.prev {
+    left: -70px;
+}
+
+.next {
+    right: -70px;
+}
+
+/* Profile landlord section */
+.profile-landord {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-landord:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.sticky {
+    position: sticky;
+    top: 20px;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #cbd5e0;
+}
+
+.infor h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+    color: #2d3748;
 }
 
 .address {
     display: flex;
-    flex-direction: column; /* Để các nút nhắn tin và số điện thoại nằm dọc */
-    gap: 8px; 
-}
-.address button {
-    margin: px, 3px;
-}
-.infor div {
-    text-align: center;
-}
-.infor div p {
-    margin: 5px 0;
-}
-.infor div .label {
-    font-size: 16px;
-    font-weight: bold;
-}
-.infor div .value {
-    font-size: 18px;
-    font-weight: bold;
-}
-.icons {
-    display: flex;
+    flex-direction: column;
     gap: 10px;
 }
-.icons i {
-    font-size: 20px;
-    /* color: #666; */
+
+.infor button {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
-.section-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
+
+.infor button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
 }
-.description {
-    margin-bottom: 20px;
-}
-.features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-.feature {
+
+.zalo {
+    background-color: #0068ff;
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
-.feature i {
+
+.zalo:before {
+    content: "\f075"; /* Font Awesome message icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.phone {
+    background-color: #10b981;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.phone:before {
+    content: "\f095"; /* Font Awesome phone icon */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.warning {
+    background-color: #fee2e2;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 20px;
+    color: #ef4444;
+    border-left: 4px solid #ef4444;
+}
+
+/* Property info styling */
+.header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.sub-header {
+    color: #4b5563;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+/* Enhanced price section */
+.info {
+    display: flex;
+    justify-content: space-between;
+    margin: 25px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.info > div {
+    text-align: center;
+    flex: 1;
+    min-width: 120px;
+    padding: 15px 10px;
+    background-color: #e2e8f0;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+.info .price{
+    min-width: 282px;
+}
+/* Make price section stand out */
+.info > div:first-child {
+    background-color: #3b82f6;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    z-index: 1;
+}
+
+.info > div:first-child .label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.info > div:first-child .value {
+    color: white;
+    font-size: 24px;
+}
+
+.info > div:hover {
+    transform: translateY(-5px);
+}
+
+.info > div:first-child:hover {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.label {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 5px;
+}
+
+.value {
     font-size: 20px;
-    color: #666;
-    margin-right: 10px;
+    font-weight: bold;
+    color: #1f2937;
 }
-/* Map Section */
+
+.icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.icons i {
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.icons i:hover {
+    transform: scale(1.2);
+}
+
+.fa-share-alt:hover {
+    color: #3b82f6;
+}
+
+.fa-heart:hover {
+    color: #ef4444 !important;
+}
+
+/* Features section - Modified to handle long text */
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .feature {
+    display: flex;
+    align-items: flex-start; /* Changed from center to flex-start */
+    background-color: #e2e8f0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    word-break: break-word; /* Added to handle long words */
+    overflow-wrap: break-word; /* Ensures long words wrap */
+  }
+  
+  .feature p {
+    margin: 0;
+    line-height: 1.4;
+    flex: 1; /* Allow text to take available space */
+    overflow: visible; /* Ensure text isn't cut off */
+  }
+  
+  .feature i {
+    font-size: 20px;
+    color: #4b5563;
+    margin-right: 15px;
+    min-width: 24px;
+    text-align: center;
+    margin-top: 2px; /* Slight adjustment for better alignment with text */
+  }
+  
+  /* Add tooltip for very long text */
+  .feature {
+    position: relative;
+  }
+  
+  .feature p {
+    position: relative;
+  }
+  
+  .feature p:hover {
+    overflow: visible;
+  }
+  
+
+/* Map section */
 #map {
     width: 100%;
     height: 400px;
-    border-radius: 8px;
-    margin-top: 20px;
+    border-radius: 12px;
+    margin: 30px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #cbd5e0;
 }
 
-/* Comments Section */
-/* Comment Section Styles */
+/* Comments section styling */
 .comments {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.comment-form, .edit-form, .reply-form {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #cbd5e0;
+    border-radius: 12px;
+    background-color: #e2e8f0;
 }
 
 .add-comment {
     margin-bottom: 2rem;
-    padding: 1rem;
-    background: #f9f9f9;
-    border-radius: 8px;
+    padding: 1.5rem;
+    background: #cbd5e0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .add-comment h3 {
     margin-top: 0;
-    color: #333;
+    color: #1f2937;
+    font-size: 18px;
+    margin-bottom: 15px;
 }
 
-.add-comment textarea {
+.add-comment textarea,
+.edit-form textarea,
+.reply-form textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
     min-height: 100px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     resize: vertical;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+    background-color: #f8fafc;
+}
+
+.add-comment textarea:focus,
+.edit-form textarea:focus,
+.reply-form textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
 .login-to-comment {
     text-align: center;
-    padding: 1rem;
-    background: #f5f5f5;
-    border-radius: 4px;
+    padding: 1.5rem;
+    background: #cbd5e0;
+    border-radius: 8px;
     margin-bottom: 2rem;
 }
 
 .login-to-comment a {
-    color: #0066cc;
+    color: #3b82f6;
     font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
 }
 
-.comment-form textarea, 
-.edit-form textarea, 
-.reply-form textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    resize: vertical;
-    min-height: 80px;
-    font-family: inherit;
+.login-to-comment a:hover {
+    color: #2563eb;
+    text-decoration: underline;
 }
 
 .form-actions {
@@ -225,61 +543,76 @@
 }
 
 .btn-submit {
-    background: #4a6fa5;
+    background: #3b82f6;
     color: white;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s ease;
+    font-weight: 500;
 }
 
 .btn-submit:hover {
-    background: #3a5a80;
+    background: #2563eb;
 }
 
 .btn-cancel {
-    background: #f0f0f0;
-    color: #333;
+    background: #cbd5e0;
+    color: #4b5563;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s ease;
+    font-weight: 500;
 }
 
 .btn-cancel:hover {
-    background: #e0e0e0;
+    background: #a0aec0;
 }
 
 .comment-list {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .comment {
-    background: white;
-    padding: 15px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    background: #f1f5f9;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.comment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .level-1 {
-    border-left: 4px solid #4a6fa5;
+    border-left: 4px solid #3b82f6;
 }
 
 .level-2 {
     margin-left: 40px;
     margin-top: 15px;
-    background: #f8fafc;
-    border-left: 3px solid #6c757d;
+    background: #e2e8f0;
+    border-left: 3px solid #6b7280;
+}
+
+.level-3 {
+    margin-left: 60px;
+    margin-top: 15px;
+    background: #cbd5e0;
+    border-left: 3px solid #9ca3af;
 }
 
 .comment-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .comment-author-info {
@@ -289,42 +622,45 @@
 
 .comment-author-info strong {
     font-size: 1.05em;
-    color: #2d3748;
+    color: #1f2937;
 }
 
 .comment-time {
     font-size: 0.85em;
-    color: #718096;
+    color: #6b7280;
+    margin-top: 3px;
 }
 
 .comment-content {
-    margin: 10px 0;
-    line-height: 1.5;
-    /* white-space: pre-line; */
+    margin: 15px 0;
+    line-height: 1.6;
+    color: #4b5563;
 }
 
 .comment-actions, .reply-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 15px;
+    margin-top: 15px;
+    flex-wrap: wrap;
 }
 
 .btn-action {
     background: none;
     border: none;
-    color: #4a6fa5;
+    color: #3b82f6;
     cursor: pointer;
     padding: 5px 10px;
     font-size: 0.9em;
     display: flex;
     align-items: center;
     gap: 5px;
-    transition: color 0.3s;
+    transition: color 0.3s ease;
+    border-radius: 4px;
 }
 
 .btn-action:hover {
-    color: #3a5a80;
-    text-decoration: underline;
+    color: #2563eb;
+    background-color: #e2e8f0;
 }
 
 .btn-action i {
@@ -334,17 +670,20 @@
 .toggle-replies {
     background: none;
     border: none;
-    color: #4a6fa5;
+    color: #3b82f6;
     cursor: pointer;
     padding: 5px 10px;
     font-size: 0.9em;
     display: flex;
     align-items: center;
     gap: 5px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    border-radius: 4px;
 }
 
 .toggle-replies:hover {
-    text-decoration: underline;
+    color: #2563eb;
+    background-color: #e2e8f0;
 }
 
 .toggle-icon {
@@ -353,90 +692,30 @@
 
 .replies {
     margin-top: 15px;
-    display: none;
-}
-
-.replies.expanded {
-    display: block;
-}
-
-.replies.collapsed {
-    display: none;
-}
-
-.reply.level-2 {
-    margin-left: 30px;
-    margin-top: 10px;
-    background-color: #f9f9f9;
-    border-left: 3px solid #ccc;
-}
-
-.reply.level-3 {
-    margin-left: 50px;
-    margin-top: 10px;
-    background-color: #f5f5f5;
-    border-left: 3px solid #aaa;
 }
 
 .reply-to {
-    color: #666;
+    color: #6b7280;
     font-style: italic;
     font-size: 0.9em;
-}
-.edit-form {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    display: none; /* Mặc định ẩn */
-}
-
-.edit-form textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ced4da;
+    background-color: #e2e8f0;
+    padding: 3px 8px;
     border-radius: 4px;
-    resize: vertical;
+    display: inline-block;
+    margin-bottom: 5px;
 }
 
-.form-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-submit {
-    background: #4a6fa5;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-cancel {
-    background: #f0f0f0;
-    color: #333;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-/* chia sẻ*/
-/* Thêm vào file CSS */
+/* Share button animation */
 .share-btn {
     transition: all 0.3s ease;
 }
 
 .share-btn:hover {
-    color: #4299e1;
+    color: #3b82f6;
 }
 
 .share-btn.copied {
-    color: #48bb78;
+    color: #10b981;
     animation: bounce 0.5s;
 }
 
@@ -444,4 +723,144 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
-/* end detail */
+
+/* Responsive design */
+@media (max-width: 992px) {
+    .layout {
+        flex-direction: column;
+    }
+    
+    .right-section {
+        order: -1;
+        margin-bottom: 20px;
+    }
+    
+    .sticky {
+        position: static;
+    }
+    
+    .info > div {
+        min-width: 100px;
+    }
+    
+    .carousel {
+        height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .header {
+        font-size: 24px;
+    }
+    
+    .main-image img {
+        height: 300px;
+    }
+    
+    .thumbnails img, .see-more-overlay {
+        width: 100px;
+        height: 100px;
+        min-width: 100px;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+    }
+    
+    .info {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .info > div {
+        flex-basis: calc(50% - 10px);
+        min-width: unset;
+    }
+    
+    .carousel {
+        height: 350px;
+    }
+    
+    .carousel-control {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .prev {
+        left: 10px;
+    }
+    
+    .next {
+        right: 10px;
+    }
+    
+    .level-2 {
+        margin-left: 20px;
+    }
+    
+    .level-3 {
+        margin-left: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .thumbnails {
+        gap: 8px;
+    }
+    
+    .thumbnails img, .see-more-overlay {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+    }
+    
+    .see-more-overlay span {
+        font-size: 18px;
+    }
+    
+    .see-more-overlay p {
+        font-size: 12px;
+    }
+    
+    .profile-landord {
+        padding: 15px;
+    }
+    
+    .avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .infor h2 {
+        font-size: 1rem;
+    }
+    
+    .info > div {
+        flex-basis: 100%;
+    }
+
+
+    
+    .carousel {
+        height: 300px;
+    }
+    
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .comment-actions, .reply-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-action, .toggle-replies {
+        width: 100%;
+    }
+}

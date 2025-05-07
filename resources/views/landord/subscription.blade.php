@@ -1,29 +1,29 @@
 @extends('layouts.landord')
 
 @section('content')
-<div class="main">
+<div class="main subscription_page">
 
     @if(session('success'))
-    <div class="alert alert-success">
+    <div class="subscription_alert subscription_alert-success">
         {{ session('success') }}
     </div>
     @endif
 
     @if(session('error'))
-    <div class="alert alert-danger">
+    <div class="subscription_alert subscription_alert-danger">
         {{ session('error') }}
     </div>
     @endif
 
-    <div class="title2">CHOOSE YOUR PLAN</div>
-    <div class="plans">
+    <div class="subscription_title">CHOOSE YOUR PLAN</div>
+    <div class="subscription_plans">
         @if($subscriptionPackage->count() > 0)
         @foreach($subscriptionPackage as $package)
-        <div class="plan">
-            <div class="plan-header {{ strtolower($package->package_name) }}">
+        <div class="subscription_plan">
+            <div class="subscription_plan-header {{ strtolower($package->package_name) }}">
                 <h2>{{ strtoupper($package->package_name) }}</h2>
             </div>
-            <div class="plan-body">
+            <div class="subscription_plan-body">
                 <ul>
                     @php
                     $features = explode('.', $package->description);
@@ -34,10 +34,10 @@
                     @endif
                     @endforeach
                 </ul>
-                <div class="price standard {{ strtolower($package->package_name) }}">
+                <div class="subscription_price {{ strtolower($package->package_name) }}">
                     ${{ number_format($package->price, 2) }}
                 </div>
-                <div class="buy">
+                <div class="subscription_buy">
                     <form action="{{ url('/landlord/vnpaypayment') }}" method="POST">
                         @csrf
                         <input type="hidden" name="price" value="{{ $package->price }}">

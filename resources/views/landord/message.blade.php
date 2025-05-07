@@ -3,12 +3,12 @@
 @section('content')
 <div class="main">
     <div class="message-container">
-        <!-- Danh sách cuộc trò chuyện -->
+        <!-- Conversations List -->
         <div class="conversations-list">
             <div class="conversations-header">
-                <h2>Tin nhắn</h2>
+                <h2>Messages</h2>
                 {{-- <form action="{{ route('customer.chat') }}" method="GET" class="search-form">
-                    <input type="text" name="search" placeholder="Tìm kiếm người dùng..." value="{{ request('search') }}">
+                    <input type="text" name="search" placeholder="Search users..." value="{{ request('search') }}">
                     <button type="submit"><i class="fas fa-search"></i></button>
                 </form> --}}
             </div>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="conversation-info">
                             <h3>{{ $user->name }}</h3>
-                            <p>{{ $user->last_message ? Str::limit($user->last_message->message, 30) : 'Chưa có tin nhắn' }}</p>
+                            <p>{{ $user->last_message ? Str::limit($user->last_message->message, 30) : 'No messages yet' }}</p>
                         </div>
                         <div class="conversation-meta">
                             <span class="time">
@@ -33,12 +33,12 @@
                         </div>
                     </div>
                 @empty
-                    <p class="no-conversation">Chưa có cuộc trò chuyện nào.</p>
+                    <p class="no-conversation">No conversations yet.</p>
                 @endforelse
             </div>
         </div>
 
-        <!-- Khu vực tin nhắn -->
+        <!-- Message Area -->
         <div class="message-area" style="{{ $userId ? '' : 'display: none;' }}">
             @if ($userId)
                 @php
@@ -88,10 +88,10 @@
                         @csrf
                         <div class="message-input-wrapper">
                             <input type="hidden" name="receiver_id" value="{{ $userId }}">
-                            <input type="text" name="message" class="message-input-field" placeholder="Nhập tin nhắn của bạn..." required>
+                            <input type="text" name="message" class="message-input-field" placeholder="Enter your message..." required>
                             <button type="submit" class="message-send-btn">
                                 <i class="fas fa-paper-plane message-send-icon"></i>
-                                <span class="message-send-text">Gửi</span>
+                                <span class="message-send-text">Send</span>
                             </button>
                         </div>
                     </form>
@@ -99,12 +99,12 @@
             @endif
         </div>
 
-        <!-- Trạng thái trống -->
+        <!-- Empty State -->
         <div class="empty-state" style="{{ $userId ? 'display: none;' : '' }}">
             <div class="empty-state-content">
                 <i class="far fa-comment-dots empty-state-icon"></i>
-                <h2>Tin nhắn của bạn</h2>
-                <p>Chọn một cuộc trò chuyện để bắt đầu nhắn tin</p>
+                <h2>Your Messages</h2>
+                <p>Select a conversation to start messaging</p>
             </div>
         </div>
     </div>

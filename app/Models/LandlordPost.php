@@ -29,6 +29,7 @@ class LandlordPost extends Model
         'service_price',
         'furniture',
         'utilities',
+        'rejection_reason',
         'status',
     ];
 
@@ -69,20 +70,52 @@ class LandlordPost extends Model
     public static function createPost(array $data)
     {
         $user = Auth::user();
-        // $subscription = $user->subscriptions()->active()->first();
         $subscription = Subscription::where('user_id', $user->id)
             ->where('status', 'active')
             ->where('end_date', '>=', now())
             ->first();
 
-
         if (!$subscription || !$subscription->canPost()) {
             throw new \Exception('Bạn không có lượt đăng bài hoặc gói đăng ký đã hết hạn.');
         }
 
-        $post = self::create($data);
+        // Giảm số lượng bài đăng ngay lập tức khi tạo bài đăng
         $subscription->decrementRemainingPosts();
 
+        $post = self::create($data);
+
         return $post;
+    }
+
+    /**
+     * Khôi phục số bài đăng khi bài đăng bị từ chối.
+     */
+    public function restorePostCount()
+    {
+        $subscription = Subscription::where('user_id', $this->user_id)
+            ->where('status', 'active')
+            ->where('end_date', '>=', now())
+            ->first();
+
+        if ($subscription) {
+            $subscription->incrementRemainingPosts();
+        }
+    }
+
+    /**
+     * tăng số bài đăng khi bài đăng bị từ chối được chấp thuận.
+     */
+    public function decrementPostCount()
+    {
+        $subscription = Subscription::where('user_id', $this->user_id)
+            ->where('status', 'active')
+            ->where('end_date', '>=', now())
+            ->first();
+
+        if ($subscription && $subscription->canPost()) {
+            $subscription->decrementRemainingPosts();
+        } else {
+            throw new \Exception('Không thể duyệt bài đăng vì người dùng không còn lượt đăng bài.');
+        }
     }
 }

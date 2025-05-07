@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\LandlordPost;
 use App\Models\CustomerPost;
+use App\Models\BannedWord;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -54,6 +55,27 @@ class CommentController extends Controller
             'post_type' => 'required|in:landlord,customer'
         ]);
 
+        // Lấy từ cấm từ database
+        $bannedWords = BannedWord::pluck('word')->toArray();
+        $content = $request->content;
+
+        // Kiểm tra từng từ cấm
+        $foundBannedWords = [];
+        foreach ($bannedWords as $word) {
+            $pattern = '/\b' . preg_quote($word, '/') . '\b/ui';
+            if (preg_match($pattern, $content)) {
+                $foundBannedWords[] = $word;
+            }
+        }
+
+        // Nếu tìm thấy từ cấm, không lưu comment
+        if (!empty($foundBannedWords)) {
+            return back()
+                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withInput()
+                ->with('failed_post_id', $postId);
+        }
+
         $user = Auth::user();
         $post = $request->post_type === 'landlord'
             ? LandlordPost::findOrFail($postId)
@@ -83,15 +105,32 @@ class CommentController extends Controller
         return back()->with('success', 'Bình luận đã được thêm thành công.');
     }
 
-
-    /**
-     * Cập nhật bình luận (chỉ user sở hữu bình luận có thể sửa)
-     */
     public function update(Request $request, $commentId)
     {
         $request->validate([
-            'content' => 'required|string',
+            'content' => 'required|string|max:1000',
         ]);
+
+        // Lấy từ cấm từ database
+        $bannedWords = BannedWord::pluck('word')->toArray();
+        $content = $request->content;
+
+        // Kiểm tra từng từ cấm
+        $foundBannedWords = [];
+        foreach ($bannedWords as $word) {
+            $pattern = '/\b' . preg_quote($word, '/') . '\b/ui';
+            if (preg_match($pattern, $content)) {
+                $foundBannedWords[] = $word;
+            }
+        }
+
+        // Nếu tìm thấy từ cấm, không update comment
+        if (!empty($foundBannedWords)) {
+            return back()
+                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withInput()
+                ->with('comment_id', $commentId);
+        }
 
         $comment = Comment::findOrFail($commentId);
         $user = Auth::user();

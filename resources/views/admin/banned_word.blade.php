@@ -4,14 +4,14 @@
 <div class="admin-container">
     <div class="head-title">
         <div class="left">
-            <h1>Quản lý từ khóa cấm</h1>
+            <h1>Manage banned keywords</h1>
             <ul class="breadcrumb">
                 <li>
-                    <a href="#">Bảng điều khiển</a>
+                    <a href="#">Control Panel</a>
                 </li>
                 <li><i class='bx bx-chevron-right'></i></li>
                 <li>
-                    <a class="active" href="#">Từ khóa cấm</a>
+                    <a class="active" href="#">Banned keywords</a>
                 </li>
             </ul>
         </div>
@@ -19,15 +19,15 @@
 
     <div class="banned-words-container">
         <div class="banned-words-header">
-            <h2>Danh sách từ khóa cấm</h2>
+            <h2>List of banned keywords</h2>
             <button class="add-word-btn" id="addWordBtn">
-                <i class='bx bx-plus'></i> Thêm từ mới
+                <i class='bx bx-plus'></i> Add new word
             </button>
         </div>
 
         <div class="search-section">
             <div class="search-group">
-                <input type="text" id="searchWord" placeholder="Tìm kiếm từ khóa...">
+                <input type="text" id="searchWord" placeholder="Search for keywords...">
                 <button type="button"><i class='bx bx-search'></i></button>
             </div>
         </div>
@@ -37,14 +37,14 @@
                 <thead>
                     <tr>
                         <th class="order-column">STT</th>
-                        <th>Từ khóa</th>
-                        <th>Ngày thêm</th>
-                        <th>Thao tác</th>
+                        <th>Keywords</th>
+                        <th>Date added</th>
+                        <th>Operation</th>
                     </tr>
                 </thead>
                 <tbody id="bannedWordsTableBody">
                     <tr>
-                        <td colspan="4" class="text-center">Đang tải dữ liệu...</td>
+                        <td colspan="4" class="text-center">Loading data...</td>
                     </tr>
                 </tbody>
             </table>
@@ -57,18 +57,18 @@
     <div id="wordModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Thêm từ khóa cấm</h3>
+                <h3 id="modalTitle">Add banned keywords</h3>
                 <span class="close-modal">&times;</span>
             </div>
             <form id="wordForm">
                 <input type="hidden" id="wordId">
                 <div class="form-group">
-                    <label for="word">Từ khóa:</label>
+                    <label for="word">Keywords:</label>
                     <input type="text" id="word" required>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="cancel-btn" id="cancelBtn">Hủy</button>
-                    <button type="submit" class="save-btn">Lưu</button>
+                    <button type="button" class="cancel-btn" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="save-btn">Save</button>
                 </div>
             </form>
         </div>
@@ -78,13 +78,13 @@
     <div id="deleteModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Xác nhận xóa</h3>
+                <h3>Confirm deletion</h3>
                 <span class="close-modal">&times;</span>
             </div>
-            <p>Bạn có chắc chắn muốn xóa từ khóa này? Hành động này không thể hoàn tác.</p>
+            <p>Are you sure you want to delete this keyword?</p>
             <div class="form-actions">
-                <button type="button" class="cancel-btn" id="cancelDeleteBtn">Hủy</button>
-                <button type="button" class="delete-btn" id="confirmDeleteBtn">Xóa</button>
+                <button type="button" class="cancel-btn" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="delete-btn" id="confirmDeleteBtn">Delete</button>
             </div>
         </div>
     </div>
@@ -150,8 +150,8 @@
                 renderPagination(data);
             })
             .catch(error => {
-                console.error('Lỗi khi lấy danh sách từ khóa:', error);
-                bannedWordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Đã xảy ra lỗi khi tải dữ liệu</td></tr>';
+                console.error('Error getting keyword list:', error);
+                bannedWordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">An error occurred while loading data.</td></tr>';
             });
     }
 
@@ -159,7 +159,7 @@
     function renderTable(words) {
         bannedWordsTableBody.innerHTML = '';
         if (words.length === 0) {
-            bannedWordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Không tìm thấy từ khóa</td></tr>';
+            bannedWordsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Keyword not found</td></tr>';
             return;
         }
 
@@ -223,7 +223,7 @@
 
     // Hàm mở modal chỉnh sửa
     function openEditModal(id, word) {
-        modalTitle.textContent = 'Chỉnh sửa từ khóa cấm';
+        modalTitle.textContent = 'Edit banned keywords';
         wordInput.value = word;
         wordIdInput.value = id;
         openModal(wordModal);
@@ -231,7 +231,7 @@
 
     // Hàm mở modal thêm từ mới
     addWordBtn.addEventListener('click', () => {
-        modalTitle.textContent = 'Thêm từ khóa cấm';
+        modalTitle.textContent = 'Add banned keywords';
         wordForm.reset();
         wordIdInput.value = '';
         openModal(wordModal);
@@ -270,8 +270,8 @@
                 alert(data.message);
             })
             .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi lưu từ khóa');
+                console.error('error:', error);
+                alert('An error occurred while saving the keyword.');
             });
     });
 
@@ -290,8 +290,8 @@
                 alert(data.message);
             })
             .catch(error => {
-                console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi xóa từ khóa');
+                console.error('error', error);
+                alert('An error occurred while deleting the keyword.');
             });
     });
 

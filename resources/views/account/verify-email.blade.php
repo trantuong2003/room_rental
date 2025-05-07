@@ -6,23 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Xác nhận Email</title>
+    <title>Email Confirmation</title>
     <link rel="stylesheet" href="{{ asset('assets/css/account/verify.css') }}">
 </head>
 
 <body>
     <div class="container">
-        <h1>Vui lòng kiểm tra email để xác nhận tài khoản của bạn.</h1>
+        <h1>Please check your email to confirm your account.</h1>
 
         @if (session('message'))
         <p class="success-message">{{ session('message') }}</p>
         @endif
 
-        <p>Nếu bạn không nhận được email, hãy nhấn vào nút bên dưới để gửi lại.</p>
+        <p>If you do not receive the email, click the button below to resend.</p>
 
         <form id="resendEmailForm" method="POST" action="{{ route('verification.send') }}">
             @csrf
-            <button type="submit" class="btn">Gửi lại email xác nhận</button>
+            <button type="submit" class="btn">Resend confirmation email</button>
         </form>
     </div>
 
@@ -40,11 +40,11 @@
             })
             .then(response => response.json())
             .then(data => {
-                alert(data.message || "Email xác nhận đã được gửi lại!");
+                alert(data.message || "Confirmation email has been resent!");
             })
             .catch(error => {
-                console.error("Lỗi khi gửi lại email:", error);
-                alert("Không thể gửi lại email xác nhận.");
+                console.error("Error resending email:", error);
+                alert("The confirmation email could not be resent.");
             });
         });
     </script>

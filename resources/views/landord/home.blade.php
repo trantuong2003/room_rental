@@ -2,25 +2,6 @@
 
 @section('content')
 <div class="main">
-    {{-- <div class="topbar">
-        <div class="toggle">
-            <ion-icon name="menu-outline"></ion-icon>
-        </div>
-
-        <div class="search">
-            <label>
-                <input type="text" placeholder="Search here">
-                <ion-icon name="search-outline"></ion-icon>
-            </label>
-        </div>
-
-        <div class="user">
-            <img src="assets/image/customer01.jpg" alt="">
-        </div>
-    </div> --}}
-
-    <!-- ======================= Cards ================== -->
-
     @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -32,209 +13,107 @@
         {{ session('error') }}
     </div>
     @endif
+
     <div class="cardBox">
         <div class="card">
             <div>
-                <div class="numbers">1,504</div>
-
-                <div class="cardName">Daily Views </div>
+                <div class="numbers">{{ $totalPosts }}</div>
+                <div class="cardName">Total Posts</div>
             </div>
-
             <div class="iconBx">
-                <ion-icon name="eye-outline"></ion-icon>
+                <ion-icon name="document-text-outline"></ion-icon>
             </div>
         </div>
 
         <div class="card">
             <div>
-                <div class="numbers">80</div>
-                <div class="cardName">Sales</div>
+                <div class="numbers">{{ $subscriptionExpiry ?? 'No Active Subscription' }}</div>
+                <div class="cardName">Subscription Expiry</div>
             </div>
-
             <div class="iconBx">
-                <ion-icon name="cart-outline"></ion-icon>
+                <ion-icon name="calendar-outline"></ion-icon>
             </div>
         </div>
 
         <div class="card">
             <div>
-                <div class="numbers">284</div>
-                <div class="cardName">Comments</div>
-            </div>
-
-            <div class="iconBx">
-                <ion-icon name="chatbubbles-outline"></ion-icon>
-            </div>
-        </div>
-
-        <div class="card">
-            <div>
-                <div id="remaining-posts" class="numbers">{{ $remainingPosts }}</div>
+                <div class="numbers">{{ $remainingPosts }}</div>
                 <div class="cardName">Remaining Posts</div>
             </div>
-
             <div class="iconBx">
                 <ion-icon name="cash-outline"></ion-icon>
             </div>
         </div>
+
+        <div class="card">
+            <div>
+                <div class="numbers">{{ $recentTransactions->count() }}</div>
+                <div class="cardName">Recent Transactions</div>
+            </div>
+            <div class="iconBx">
+                <ion-icon name="wallet-outline"></ion-icon>
+            </div>
+        </div>
     </div>
 
-    <!-- ================ Order Details List ================= -->
     <div class="details">
         <div class="recentOrders">
             <div class="cardHeader">
-                <h2>Recent Orders</h2>
+                <h2>Recent Messages</h2>
                 <a href="#" class="btn">View All</a>
             </div>
-
             <table>
                 <thead>
                     <tr>
-                        <td>Name</td>
-                        <td>Price</td>
-                        <td>Payment</td>
+                        <td>Sender</td>
+                        <td>Message</td>
+                        <td>Time</td>
                         <td>Status</td>
+                        <td>Action</td>
                     </tr>
                 </thead>
-
                 <tbody>
+                    @foreach($recentMessages as $message)
                     <tr>
-                        <td>Star Refrigerator</td>
-                        <td>$1200</td>
-                        <td>Paid</td>
-                        <td><span class="status delivered">Delivered</span></td>
+                        <td>{{ $message->sender->name }}</td>
+                        <td>{{ Str::limit($message->message, 30) }}</td>
+                        <td>{{ $message->created_at->diffForHumans() }}</td>
+                        <td>
+                            <span class="status {{ $message->is_read ? 'delivered' : 'pending' }}">
+                                {{ $message->is_read ? 'Read' : 'Unread' }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('landlord.chat.user', $message->sender_id) }}" class="btn">Reply</a>
+                        </td>
                     </tr>
-
-                    <tr>
-                        <td>Dell Laptop</td>
-                        <td>$110</td>
-                        <td>Due</td>
-                        <td><span class="status pending">Pending</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Apple Watch</td>
-                        <td>$1200</td>
-                        <td>Paid</td>
-                        <td><span class="status return">Return</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Addidas Shoes</td>
-                        <td>$620</td>
-                        <td>Due</td>
-                        <td><span class="status inProgress">In Progress</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Star Refrigerator</td>
-                        <td>$1200</td>
-                        <td>Paid</td>
-                        <td><span class="status delivered">Delivered</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Dell Laptop</td>
-                        <td>$110</td>
-                        <td>Due</td>
-                        <td><span class="status pending">Pending</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Apple Watch</td>
-                        <td>$1200</td>
-                        <td>Paid</td>
-                        <td><span class="status return">Return</span></td>
-                    </tr>
-
-                    <tr>
-                        <td>Addidas Shoes</td>
-                        <td>$620</td>
-                        <td>Due</td>
-                        <td><span class="status inProgress">In Progress</span></td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
 
-        <!-- ================= New Customers ================ -->
         <div class="recentCustomers">
             <div class="cardHeader">
-                <h2>Recent Customers</h2>
+                <h2>Recent Comments</h2>
             </div>
-
             <table>
+                @foreach($recentComments as $comment)
                 <tr>
                     <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer02.jpg" alt=""></div>
+                        <div class="imgBx">
+                            <img src="{{ $comment->user->profile_photo_url ?? 'assets/image/customer01.jpg' }}" alt="">
+                        </div>
                     </td>
                     <td>
-                        <h4>David <br> <span>Italy</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer01.jpg" alt=""></div>
+                        <h4>{{ $comment->user->name }} <br>
+                            <span>{{ Str::limit($comment->content, 20) }}</span>
+                        </h4>
                     </td>
                     <td>
-                        <h4>Amit <br> <span>India</span></h4>
+                        <a href="{{ route('landlord.posts.detail', $comment->commentable_id) }}" class="btn">Reply</a>
                     </td>
                 </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer02.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>David <br> <span>Italy</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer01.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>Amit <br> <span>India</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer02.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>David <br> <span>Italy</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer01.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>Amit <br> <span>India</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer01.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>David <br> <span>Italy</span></h4>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td width="60px">
-                        <div class="imgBx"><img src="assets/image/customer02.jpg" alt=""></div>
-                    </td>
-                    <td>
-                        <h4>Amit <br> <span>India</span></h4>
-                    </td>
-                </tr>
+                @endforeach
             </table>
         </div>
     </div>

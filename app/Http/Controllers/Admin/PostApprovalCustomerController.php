@@ -23,6 +23,7 @@ class PostApprovalCustomerController extends Controller
         $post->update([
             'status' => 'approved',
             'approved_at' => now(),
+            'rejection_reason' => null
         ]);
         
         return back()->with('success', 'Bài đăng đã được duyệt');
@@ -30,11 +31,14 @@ class PostApprovalCustomerController extends Controller
 
     public function reject(Request $request, $id)
     {
-        // $request->validate(['reason' => 'required|string|max:255']);
-        
+        $request->validate([
+            'rejection_reason' => 'required|string|min:10|max:500'
+        ]);
+
         $post = CustomerPost::findOrFail($id);
         $post->update([
             'status' => 'rejected',
+            'rejection_reason' => $request->rejection_reason
         ]);
         
         return back()->with('success', 'Bài đăng đã bị từ chối');

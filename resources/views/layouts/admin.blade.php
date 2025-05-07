@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/admin/moderation_post.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/banned_word.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/approval_customer_post.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/account.css') }}">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <script src="{{ asset('assets/js/admin.js') }}"></script>
@@ -26,9 +27,15 @@
         </a>
         <ul class="side-menu top">
             <li class="active">
-                <a href="#">
+                <a href="/admin">
                     <i class='bx bxs-dashboard'></i>
                     <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/account/profile">
+                    <i class='bx bxs-group'></i>
+                    <span class="text">Account</span>
                 </a>
             </li>
             <li>
@@ -40,36 +47,39 @@
             <li>
                 <a href="/admin/moderation_post">
                     <i class='bx bxs-doughnut-chart'></i>
-                    <span class="text">Moderation</span>
+                    <span class="text">Moderation Post</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="/admin/moderation/customer/post">
+                    <i class='bx bxs-cog'></i>
+                    <span class="text">Approval Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="/admin/banned-words">
                     <i class='bx bxs-message-dots'></i>
                     <span class="text">Comment</span>
                 </a>
             </li>
             <li>
-                <a href="#">
-                    <i class='bx bxs-group'></i>
-                    <span class="text">Account</span>
+                <a href="/admin/transactions" >
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Transactions</span>
                 </a>
             </li>
+
+
         </ul>
-        <ul class="side-menu">
-            <li>
-                <a href="#">
-                    <i class='bx bxs-cog'></i>
-                    <span class="text">Settings</span>
-                </a>
-            </li>
+        {{-- <ul class="side-menu">
+
             <li>
                 <a href="#" class="logout">
                     <i class='bx bxs-log-out-circle'></i>
                     <span class="text">Logout</span>
                 </a>
             </li>
-        </ul>
+        </ul> --}}
     </section>
     <!-- SIDEBAR -->
 

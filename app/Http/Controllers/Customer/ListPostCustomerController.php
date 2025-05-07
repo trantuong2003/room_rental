@@ -8,18 +8,21 @@ use App\Models\LandlordPost;
 use App\Models\Favorite;
 use App\Models\Comment;
 use App\Models\CustomerPost;
+use App\Models\BannedWord;
 use Illuminate\Support\Facades\Auth;
 
 class ListPostCustomerController extends Controller
 {
-     // Hiển thị danh sách bài đăng 
+     // Hiển thị danh sách bài đăng     
      public function index()
      {
-         $posts = CustomerPost::with(['user', 'comments.user', 'favoritedby'])
-             ->where('status', 'approved')
-             ->withCount(['comments', 'favoritedby'])
-             ->latest()
-             ->get();
+        $posts = CustomerPost::with(['user', 'comments.user', 'favoritedby'])
+        ->where('status', 'approved')
+        ->withCount(['comments', 'favoritedby as likes_count' => function ($query) {
+            $query->where('favoriteable_type', CustomerPost::class);
+        }])
+        ->latest()
+        ->get();
  
          // Thêm thông tin is_favorited thủ công nếu cần
          if (Auth::check()) {
@@ -66,43 +69,100 @@ class ListPostCustomerController extends Controller
     }
  
      // Xử lý bình luận
-     public function storeComment(Request $request, $postId)
-     {
+    // Xử lý bình luận (chỉ cho customer posts)
+    public function storeComment(Request $request, $postId)
+    {
         $request->validate([
             'content' => 'required|string|max:1000',
             'parent_id' => 'nullable|exists:comments,id'
         ]);
 
-        if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        // Lấy từ cấm từ database để đảm bảo luôn cập nhật
+        $bannedWords = BannedWord::pluck('word')->toArray();
+        $content = $request->content;
+
+        // Kiểm tra từng từ cấm trong nội dung
+        $foundBannedWords = [];
+        foreach ($bannedWords as $word) {
+            // Sử dụng regex để tìm chính xác từ cấm trong nội dung
+            $pattern = '/\b' . preg_quote($word, '/') . '\b/ui'; // 'u' flag for UTF-8, 'i' for case-insensitive
+            if (preg_match($pattern, $content)) {
+                $foundBannedWords[] = $word;
+            }
         }
 
+        // Nếu tìm thấy từ cấm, trả về lỗi và KHÔNG lưu vào database
+        if (!empty($foundBannedWords)) {
+            session()->flash('error', 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords));
+
+            return redirect()->back()
+                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withInput()
+                ->with('failed_post_id', $postId);
+        }
+
+        // Chỉ lưu vào database nếu không có từ cấm
         $post = CustomerPost::findOrFail($postId);
 
         $comment = new Comment();
-        $comment->content = $request->content;
+        $comment->content = $content;
         $comment->user_id = Auth::id();
         $comment->commentable_id = $post->id;
         $comment->commentable_type = CustomerPost::class;
         $comment->parent_id = $request->parent_id;
         $comment->save();
 
-        return redirect()->route('customer.roommates.index');
-     }
- 
-     public function updateComment(Request $request, $commentId)
-     {
-         $request->validate([
-             'content' => 'required|string|max:1000'
-         ]);
- 
-         $comment = Comment::where('id', $commentId)
-             ->where('user_id', Auth::id())
-             ->firstOrFail();
- 
-         $comment->content = $request->content;
-         $comment->save();
- 
-         return redirect()->route('customer.roommates.index');
-     }
+        return redirect()->back()->with('success', 'Bình luận đã được gửi thành công!');
+    }
+    private function checkForBannedWords($content, $bannedWords)
+    {
+        $foundWords = [];
+        $content = mb_strtolower($content, 'UTF-8');
+
+        foreach ($bannedWords as $word) {
+            $lowerWord = mb_strtolower($word, 'UTF-8');
+            if (preg_match('/\b' . preg_quote($lowerWord, '/') . '\b/u', $content)) {
+                $foundWords[] = $word;
+            }
+        }
+
+        return $foundWords;
+    }
+    public function updateComment(Request $request, $commentId)
+    {
+        $request->validate([
+            'content' => 'required|string|max:1000'
+        ]);
+
+        // Lấy từ cấm từ database
+        $bannedWords = BannedWord::pluck('word')->toArray();
+        $content = $request->content;
+
+        // Kiểm tra từng từ cấm
+        $foundBannedWords = [];
+        foreach ($bannedWords as $word) {
+            $pattern = '/\b' . preg_quote($word, '/') . '\b/ui';
+            if (preg_match($pattern, $content)) {
+                $foundBannedWords[] = $word;
+            }
+        }
+
+        // Nếu tìm thấy từ cấm, KHÔNG update comment
+        if (!empty($foundBannedWords)) {
+            return redirect()->back()
+                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withInput()
+                ->with('comment_id', $commentId);
+        }
+
+        // Chỉ update comment nếu không có từ cấm
+        $comment = Comment::where('id', $commentId)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $comment->content = $request->content;
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Bình luận đã được cập nhật thành công!');
+    }
 }

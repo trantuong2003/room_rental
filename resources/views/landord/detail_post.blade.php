@@ -6,36 +6,72 @@
         <div class="detail_container">
             <div class="card layout">
                 <div class="left-section">
-                    <!-- Hiển thị ảnh chính -->
-                    <div class="main-image">
-                        @if ($post->images->isNotEmpty())
-                        <img src="{{ asset('storage/' . $post->images->first()->image_path) }}" alt="Room for rent">
-                        @else
-                        <img src="https://placehold.co/300x200" alt="No image">
-                        @endif
+                    <!-- Display status notification if rejected -->
+                    @if ($post->status === 'rejected')
+                    <div class="alert alert-danger rejection-notice">
+                        <h3><i class="fas fa-exclamation-circle"></i> Post has been rejected</h3>
+                        <p><strong>Reason:</strong> {{ $post->rejection_reason ?: 'No specific reason provided' }}</p>
                     </div>
-                    <!-- Hiển thị các ảnh phụ -->
-                    <div class="thumbnails">
-                        @foreach ($post->images->slice(1, 3) as $image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Thumbnail">
-                        @endforeach
-                    </div>
+                    @endif
 
-                    <!-- Hiển thị thông tin bài đăng -->
+                    <!-- Display main image -->
+                    <div class="image-container">
+                        <!-- Main image -->
+                        <div class="main-image">
+                            @if ($post->images->isNotEmpty())
+                            <img src="{{ asset('storage/' . $post->images->first()->image_path) }}" alt="Room for rent">
+                            @else
+                            <img src="https://placehold.co/300x200" alt="No image">
+                            @endif
+                        </div>
+
+                        <!-- Thumbnails -->
+                        <div class="thumbnails">
+                            @foreach ($post->images->slice(1, 6) as $image)
+                            <img src="{{ asset('storage/' . $image->image_path) }}" alt="Thumbnail">
+                            @endforeach
+                            @if ($post->images->count() > 7)
+                            <div class="see-more-overlay" onclick="showAllImages({{ $post->id }})">
+                                <span>+{{ $post->images->count() - 4 }}</span>
+                                <p>View more</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                    <!-- Modal to display all thumbnails -->
+                    <div id="image-modal-{{ $post->id }}" class="image-modal hidden">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal({{ $post->id }})">×</span>
+                            <div class="carousel">
+                                @foreach ($post->images as $index => $image)
+                                <div class="carousel-item"
+                                    style="{{ $index === 0 ? 'display: block;' : 'display: none;' }}">
+                                    <img src="{{ asset('storage/' . $image->image_path) }}"
+                                        alt="Image {{ $index + 1 }}">
+                                </div>
+                                @endforeach
+                                <button class="carousel-control prev"
+                                    onclick="prevImage({{ $post->id }})">❮</button>
+                                <button class="carousel-control next"
+                                    onclick="nextImage({{ $post->id }})">❯</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Display post information -->
                     <h1 class="header">{{ $post->title }}</h1>
                     <p class="sub-header">{{ $post->address }}</p>
                     <hr>
                     <div class="info">
                         <div>
-                            <p class="label">Mức giá</p>
+                            <p class="label">Price</p>
                             <p class="value">{{ $post->price }} </p>
                         </div>
                         <div>
-                            <p class="label">Diện tích</p>
+                            <p class="label">Area</p>
                             <p class="value">{{ $post->acreage }} </p>
                         </div>
                         <div>
-                            <p class="label">Phòng ngủ</p>
+                            <p class="label">Bedrooms</p>
                             <p class="value">{{ $post->bedrooms }} </p>
                         </div>
                         <div class="icons">
@@ -46,63 +82,67 @@
                         </div>
                     </div>
                     <hr>
-                    <h2 class="section-title">Thông tin mô tả</h2>
+                    <h2 class="section-title">Description</h2>
                     <p class="description">{{ $post->description }}</p>
-                    <h2 class="section-title">Đặc điểm bất động sản</h2>
+                    <h2 class="section-title">Property Features</h2>
                     <hr>
                     <div class="features">
                         <div class="feature">
                             <i class="fas fa-money-bill-wave"></i>
-                            <p>Mức giá: {{ $post->price }}</p>
+                            <p>Price: {{ $post->price }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-ruler-combined"></i>
-                            <p>Diện tích: {{ $post->acreage }} </p>
+                            <p>Area: {{ $post->acreage }} </p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-bed"></i>
-                            <p>Số phòng ngủ: {{ $post->bedrooms }}</p>
+                            <p>Number of bedrooms: {{ $post->bedrooms }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-bolt"></i>
-                            <p>Mức giá điện: {{ $post->electricity_price ?? 'Do chủ nhà quy định' }}</p>
+                            <p>Electricity price: {{ $post->electricity_price ?? 'As specified by landlord' }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-bath"></i>
-                            <p>Số phòng tắm, vệ sinh: {{ $post->bathrooms }} </p>
+                            <p>Number of bathrooms: {{ $post->bathrooms }} </p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-wifi"></i>
-                            <p>Mức giá internet: {{ $post->internet_price ?? 'Do chủ nhà quy định' }}</p>
+                            <p>Internet price: {{ $post->internet_price ?? 'As specified by landlord' }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-tint"></i>
-                            <p>Mức giá nước: {{ $post->water_price ?? 'Do chủ nhà quy định' }}</p>
+                            <p>Water price: {{ $post->water_price ?? 'As specified by landlord' }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-clock"></i>
-                            <p>Giá dịch vụ: {{ $post->service_price ?? 'Do chủ nhà quy định' }}</p>
+                            <p>Service price: {{ $post->service_price ?? 'As specified by landlord' }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-video"></i>
-                            <p>Tiện ích: {{ $post->utilities ?? 'Cơ bản' }}</p>
+                            <p>Amenities: {{ $post->utilities ?? 'Basic' }}</p>
                         </div>
                         <div class="feature">
                             <i class="fas fa-couch"></i>
-                            <p>Nội thất: {{ $post->furniture ?? 'Cơ bản' }}</p>
+                            <p>Furniture: {{ $post->furniture ?? 'Basic' }}</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-couch"></i>
+                            <p>Furniture: {{ $post->furniture ?? 'Basic' }}</p>
                         </div>
                     </div>
 
                     {{-- Google Maps --}}
                     @if ($post->latitude && $post->longitude)
-                    <h2 class="section-title">Vị trí</h2>
+                    <h2 class="section-title">Location</h2>
                     <div id="map" style="height: 400px; width: 100%;"></div>
                     @endif
 
                     <!-- Comments Section -->
-                    <h2 class="section-title">Bình luận</h2>
+                    <h2 class="section-title">Comments</h2>
                     <div class="comments">
-                        <!-- Danh sách bình luận -->
+                        <!-- Comment list -->
                         <div class="comment-list">
                             @foreach ($post->comments->whereNull('parent_id')->sortByDesc('created_at') as $comment)
                             <div class="comment">
@@ -115,7 +155,7 @@
                                     @if (Auth::id() === $comment->user_id)
                                     <button class="btn-action edit-btn"
                                         onclick="toggleEditForm({{ $comment->id }}, event)">
-                                        <i class="fas fa-edit"></i> Chỉnh sửa
+                                        <i class="fas fa-edit"></i> Edit
                                     </button>
                                     @endif
                                     @endauth
@@ -125,7 +165,7 @@
                                     {{ $comment->content }}
                                 </div>
 
-                                <!-- Form chỉnh sửa -->
+                                <!-- Edit form -->
                                 @auth
                                 @if (Auth::id() === $comment->user_id)
                                 <form action="{{ route('landlord.comments.update', $comment->id) }}" method="POST"
@@ -134,20 +174,20 @@
                                     @method('PUT')
                                     <textarea name="content" required>{{ $comment->content }}</textarea>
                                     <div class="form-actions">
-                                        <button type="submit" class="btn-submit">Lưu</button>
+                                        <button type="submit" class="btn-submit">Save</button>
                                         <button type="button" class="btn-cancel"
-                                            onclick="toggleEditForm(event, {{ $comment->id }})">Hủy</button>
+                                            onclick="toggleEditForm(event, {{ $comment->id }})">Cancel</button>
                                     </div>
                                 </form>
                                 @endif
                                 @endauth
 
-                                <!-- Nút trả lời -->
+                                <!-- Reply button -->
                                 <div class="reply-actions">
                                     @auth
                                     @if (auth()->user()->role === 'landlord' && $comment->user->role === 'customer')
                                     <button class="btn-action reply-btn" onclick="toggleReplyForm({{ $comment->id }})">
-                                        <i class="fas fa-reply"></i> Trả lời
+                                        <i class="fas fa-reply"></i> Reply
                                     </button>
                                     @endif
                                     @endauth
@@ -156,13 +196,13 @@
                                     <button class="btn-action toggle-replies"
                                         onclick="toggleReplies({{ $comment->id }})" id="toggle-btn-{{ $comment->id }}">
                                         <i class="fas fa-comments"></i>
-                                        <span class="toggle-text">Xem {{ $comment->replies->count() }} phản hồi</span>
+                                        <span class="toggle-text">View {{ $comment->replies->count() }} replies</span>
                                         <i class="fas fa-chevron-down toggle-icon"></i>
                                     </button>
                                     @endif
                                 </div>
 
-                                <!-- Form trả lời -->
+                                <!-- Reply form -->
                                 @auth
                                 @if (auth()->user()->role === 'landlord' && $comment->user->role === 'customer')
                                 <form action="{{ route('landlord.comments.store', $post->id) }}" method="POST"
@@ -171,17 +211,17 @@
                                     <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                                     <input type="hidden" name="post_type" value="landlord">
                                     <input type="hidden" name="reply_to" value="{{ $comment->user->name }}">
-                                    <textarea name="content" placeholder="Viết phản hồi của bạn..." required></textarea>
+                                    <textarea name="content" placeholder="Write your reply..." required></textarea>
                                     <div class="form-actions">
-                                        <button type="submit" class="btn-submit">Gửi</button>
+                                        <button type="submit" class="btn-submit">Send</button>
                                         <button type="button" class="btn-cancel"
-                                            onclick="toggleReplyForm({{ $comment->id }})">Hủy</button>
+                                            onclick="toggleReplyForm({{ $comment->id }})">Cancel</button>
                                     </div>
                                 </form>
                                 @endif
                                 @endauth
 
-                                <!-- Danh sách trả lời -->
+                                <!-- Reply list -->
                                 <div class="replies" id="replies-{{ $comment->id }}" style="display: none;">
                                     @foreach ($comment->replies->sortByDesc('created_at') as $reply)
                                     <div class="comment reply level-2">
@@ -195,7 +235,7 @@
                                             @if (Auth::id() === $reply->user_id)
                                             <button class="btn-action edit-btn"
                                                 onclick="toggleEditForm({{ $reply->id }}, event)">
-                                                <i class="fas fa-edit"></i> Chỉnh sửa
+                                                <i class="fas fa-edit"></i> Edit
                                             </button>
                                             @endif
                                             @endauth
@@ -203,7 +243,7 @@
 
                                         <div class="comment-content" id="comment-text-{{ $reply->id }}">
                                             @if($reply->parent->user_id !== $reply->user_id)
-                                            <span class="reply-to">Trả lời {{ $reply->parent->user->name }}</span><br>
+                                            <span class="reply-to">Replying to {{ $reply->parent->user->name }}</span><br>
                                             @endif
                                             {{ $reply->content }}
                                         </div>
@@ -216,22 +256,22 @@
                                             @method('PUT')
                                             <textarea name="content" required>{{ $reply->content }}</textarea>
                                             <div class="form-actions">
-                                                <button type="submit" class="btn-submit">Lưu</button>
+                                                <button type="submit" class="btn-submit">Save</button>
                                                 <button type="button" class="btn-cancel"
-                                                    onclick="toggleEditForm({{ $reply->id }}, event)">Hủy</button>
+                                                    onclick="toggleEditForm({{ $reply->id }}, event)">Cancel</button>
                                             </div>
                                         </form>
                                         @endif
                                         @endauth
 
-                                        <!-- Nút trả lời cho reply -->
+                                        <!-- Reply button for reply -->
                                         <div class="reply-actions">
                                             @auth
                                             @if (auth()->user()->role === 'landlord' && $reply->user->role ===
                                             'customer')
                                             <button class="btn-action reply-btn"
                                                 onclick="toggleReplyForm({{ $reply->id }})">
-                                                <i class="fas fa-reply"></i> Trả lời
+                                                <i class="fas fa-reply"></i> Reply
                                             </button>
                                             @endif
                                             @endauth
@@ -241,14 +281,13 @@
                                                 onclick="toggleReplies({{ $reply->id }})"
                                                 id="toggle-btn-{{ $reply->id }}">
                                                 <i class="fas fa-comments"></i>
-                                                <span class="toggle-text">Xem {{ $reply->replies->count() }} phản
-                                                    hồi</span>
+                                                <span class="toggle-text">View {{ $reply->replies->count() }} replies</span>
                                                 <i class="fas fa-chevron-down toggle-icon"></i>
                                             </button>
                                             @endif
                                         </div>
 
-                                        <!-- Form trả lời cho reply -->
+                                        <!-- Reply form for reply -->
                                         @auth
                                         @if (auth()->user()->role === 'landlord' && $reply->user->role === 'customer')
                                         <form action="{{ route('landlord.comments.store', $post->id) }}" method="POST"
@@ -257,18 +296,18 @@
                                             <input type="hidden" name="parent_id" value="{{ $reply->id }}">
                                             <input type="hidden" name="post_type" value="landlord">
                                             <input type="hidden" name="reply_to" value="{{ $reply->user->name }}">
-                                            <textarea name="content" placeholder="Viết phản hồi của bạn..."
+                                            <textarea name="content" placeholder="Write your reply..."
                                                 required></textarea>
                                             <div class="form-actions">
-                                                <button type="submit" class="btn-submit">Gửi</button>
+                                                <button type="submit" class="btn-submit">Send</button>
                                                 <button type="button" class="btn-cancel"
-                                                    onclick="toggleReplyForm({{ $reply->id }})">Hủy</button>
+                                                    onclick="toggleReplyForm({{ $reply->id }})">Cancel</button>
                                             </div>
                                         </form>
                                         @endif
                                         @endauth
 
-                                        <!-- Danh sách trả lời của reply (level 3) -->
+                                        <!-- Reply list for reply (level 3) -->
                                         <div class="replies level-3-replies" id="replies-{{ $reply->id }}"
                                             style="display: none;">
                                             @foreach ($reply->replies->sortByDesc('created_at') as $replyLevel3)
@@ -283,7 +322,7 @@
                                                     @if (Auth::id() === $replyLevel3->user_id)
                                                     <button class="btn-action edit-btn"
                                                         onclick="toggleEditForm({{ $replyLevel3->id }}, event)">
-                                                        <i class="fas fa-edit"></i> Chỉnh sửa
+                                                        <i class="fas fa-edit"></i> Edit
                                                     </button>
                                                     @endif
                                                     @endauth
@@ -291,13 +330,13 @@
 
                                                 <div class="comment-content" id="comment-text-{{ $replyLevel3->id }}">
                                                     @if($replyLevel3->parent->user_id !== $replyLevel3->user_id)
-                                                    <span class="reply-to">Trả lời {{ $replyLevel3->parent->user->name
+                                                    <span class="reply-to">Replying to {{ $replyLevel3->parent->user->name
                                                         }}</span><br>
                                                     @endif
                                                     {{ $replyLevel3->content }}
                                                 </div>
 
-                                                <!-- FORM EDIT cho reply level 3 -->
+                                                <!-- FORM EDIT for reply level 3 -->
                                                 @auth
                                                 @if (Auth::id() === $replyLevel3->user_id)
                                                 <form action="{{ route('landlord.comments.update', $replyLevel3->id) }}"
@@ -308,28 +347,28 @@
                                                     <textarea name="content"
                                                         required>{{ $replyLevel3->content }}</textarea>
                                                     <div class="form-actions">
-                                                        <button type="submit" class="btn-submit">Lưu</button>
+                                                        <button type="submit" class="btn-submit">Save</button>
                                                         <button type="button" class="btn-cancel"
-                                                            onclick="toggleEditForm({{ $replyLevel3->id }}, event)">Hủy</button>
+                                                            onclick="toggleEditForm({{ $replyLevel3->id }}, event)">Cancel</button>
                                                     </div>
                                                 </form>
                                                 @endif
                                                 @endauth
                                                 {{--
-                                                <!-- Nút trả lời cho reply level 3 (không hiển thị thêm nút xem phản hồi) -->
+                                                <!-- Reply button for reply level 3 (no additional reply view button) -->
                                                 <div class="reply-actions">
                                                     @auth
                                                     @if (auth()->user()->role === 'landlord' && $replyLevel3->user->role
                                                     === 'customer')
                                                     <button class="btn-action reply-btn"
                                                         onclick="toggleReplyForm({{ $replyLevel3->id }})">
-                                                        <i class="fas fa-reply"></i> Trả lời
+                                                        <i class="fas fa-reply"></i> Reply
                                                     </button>
                                                     @endif
                                                     @endauth
                                                 </div>
 
-                                                <!-- Form trả lời cho reply level 3 -->
+                                                <!-- Reply form for reply level 3 -->
                                                 @auth
                                                 @if (auth()->user()->role === 'landlord' && $replyLevel3->user->role ===
                                                 'customer')
@@ -342,12 +381,12 @@
                                                     <input type="hidden" name="post_type" value="landlord">
                                                     <input type="hidden" name="reply_to"
                                                         value="{{ $replyLevel3->user->name }}">
-                                                    <textarea name="content" placeholder="Viết phản hồi của bạn..."
+                                                    <textarea name="content" placeholder="Write your reply..."
                                                         required></textarea>
                                                     <div class="form-actions">
-                                                        <button type="submit" class="btn-submit">Gửi</button>
+                                                        <button type="submit" class="btn-submit">Send</button>
                                                         <button type="button" class="btn-cancel"
-                                                            onclick="toggleReplyForm({{ $replyLevel3->id }})">Hủy</button>
+                                                            onclick="toggleReplyForm({{ $replyLevel3->id }})">Cancel</button>
                                                     </div>
                                                 </form>
                                                 @endif
@@ -368,8 +407,7 @@
     </div>
 </div>
 
-
-<!-- Nhúng Google Maps API -->
+<!-- Include Google Maps API -->
 @if ($post->latitude && $post->longitude)
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google_maps.api_key') }}&callback=initMap">
@@ -461,16 +499,127 @@
         
         if (repliesDiv.style.display === "none" || repliesDiv.style.display === "") {
             repliesDiv.style.display = "block";
-            toggleText.textContent = "Thu nhỏ";
+            toggleText.textContent = "Collapse";
             toggleIcon.classList.remove('fa-chevron-down');
             toggleIcon.classList.add('fa-chevron-up');
         } else {
             repliesDiv.style.display = "none";
-            toggleText.textContent = "Xem " + repliesDiv.querySelectorAll('.reply').length + " phản hồi";
+            toggleText.textContent = "View " + repliesDiv.querySelectorAll('.reply').length + " replies";
             toggleIcon.classList.remove('fa-chevron-up');
             toggleIcon.classList.add('fa-chevron-down');
         }
     }
+
+    //amh 
+document.addEventListener("DOMContentLoaded", function () {
+    let currentIndex = {};
+
+    function toggleDetails(postId) {
+    console.log("Toggle details for post:", postId); // Kiểm tra xem hàm có được gọi không
+    let details = document.getElementById('details-' + postId);
+    let btnShow = document.getElementById('btn-show-' + postId);
+
+    if (details.style.display === 'none') {
+        details.style.display = 'block';
+        btnShow.textContent = 'Collapse';
+    } else {
+        details.style.display = 'none';
+        btnShow.textContent = 'View more';
+    }
+}
+
+    function showAllImages(postId) {
+        let modal = document.getElementById('image-modal-' + postId);
+        if (!modal) return;
+
+        modal.classList.add("active"); // Hiển thị modal
+        currentIndex[postId] = 0; // Bắt đầu từ ảnh đầu tiên
+        showImage(postId, currentIndex[postId]);
+
+        // Đóng modal khi bấm ra ngoài
+        modal.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                closeModal(postId);
+            }
+        });
+    }
+
+    function closeModal(postId) {
+        let modal = document.getElementById('image-modal-' + postId);
+        if (modal) {
+            modal.classList.remove("active"); // Ẩn modal
+        }
+    }
+
+    function showImage(postId, index) {
+        let carouselItems = document.querySelectorAll(`#image-modal-${postId} .carousel-item`);
+        if (!carouselItems.length) return;
+
+        carouselItems.forEach((item, i) => {
+            item.style.display = i === index ? 'block' : 'none';
+        });
+    }
+
+    function prevImage(postId) {
+        let carouselItems = document.querySelectorAll(`#image-modal-${postId} .carousel-item`);
+        if (!carouselItems.length) return;
+
+        currentIndex[postId] = (currentIndex[postId] - 1 + carouselItems.length) % carouselItems.length;
+        showImage(postId, currentIndex[postId]);
+    }
+
+    function nextImage(postId) {
+        let carouselItems = document.querySelectorAll(`#image-modal-${postId} .carousel-item`);
+        if (!carouselItems.length) return;
+
+        currentIndex[postId] = (currentIndex[postId] + 1) % carouselItems.length;
+        showImage(postId, currentIndex[postId]);
+    }
+        // Gán các hàm vào `window` để có thể gọi từ HTML
+        window.showAllImages = showAllImages;
+    window.closeModal = closeModal;
+    window.prevImage = prevImage;
+    window.nextImage = nextImage;
+    window.toggleDetails = toggleDetails;
+});
+
+
+//xu ly binh luan bi cam
+    // Lấy danh sách từ cấm từ PHP
+    const bannedWords = @json(\App\Models\BannedWord::pluck('word')->toArray());
+
+    // Hàm kiểm tra từ cấm
+    function checkBannedWords(content) {
+        const lowerContent = content.toLowerCase().normalize('NFC');
+        const foundWords = bannedWords.filter(word => {
+            const regex = new RegExp('\\b' + word.toLowerCase().normalize('NFC') + '\\b', 'i');
+            return regex.test(lowerContent);
+        });
+        return foundWords;
+    }
+
+    // Xử lý tất cả các form bình luận
+    document.addEventListener('DOMContentLoaded', function() {
+        const allForms = document.querySelectorAll('form[action*="/comments"]');
+        
+        allForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const textarea = this.querySelector('textarea[name="content"]');
+                const content = textarea.value;
+                const foundWords = checkBannedWords(content);
+                
+                if (foundWords.length > 0) {
+                    alert(`Content contains inappropriate words: ${foundWords.join(', ')}`);
+                    textarea.focus();
+                    return false;
+                }
+                
+                this.submit();
+            });
+        });
+    });
 </script>
 @endif
 

@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('service_price')->nullable(); // Giá dịch vụ (chuyển từ decimal sang string)
             $table->string('furniture')->nullable(); // Nội thất
             $table->text('utilities')->nullable(); // Tiện ích
+            $table->text('rejection_reason')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamps();
         });

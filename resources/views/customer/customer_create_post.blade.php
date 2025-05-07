@@ -5,8 +5,8 @@
 <div class="container">
     <div class="card layout">
         <div class="left-section">
-            <h1 class="header">Đăng bài tìm người ở cùng</h1>
-            <p class="sub-header">Chia sẻ nội dung của bạn</p>
+            <h1 class="header">Post to find a roommate</h1>
+            <p class="sub-header">Share your content</p>
             <form action="{{ isset($post) ? route('customer.roommates.update', $post->id) : route('customer.roommates.store') }}" method="POST">
                 @csrf
                 @if(isset($post))
@@ -44,16 +44,16 @@
                     <input type="text" name="contact" id="contact" placeholder="Nhập số điện thoại" required>
                 </div> --}}
 
-                <button type="submit"  class="submit-btn">{{ isset($post) ? 'Cập nhật' : 'Đăng bài' }}</button>
-                <a href="{{ route('customer.roommates.history') }}" class="btn btn-secondary">Hủy</a>
+                <button type="submit"  class="submit-btn">{{ isset($post) ? 'Update' : 'Post' }}</button>
+                <a href="{{ route('customer.roommates.history') }}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
 
         <div class="right-section">
             <div class="price-info">
-                <h3>Phí đăng bài</h3>
-                <p>Bài đăng không mất phí.</p>
-                <button class="contact-btn">Liên hệ để nhắn tin</button>
+                <h3>Posting is free.</h3>
+                <p>Be careful with your post content so your post doesn't get hidden.</p>
+                {{-- <button class="contact-btn">Contact for message</button> --}}
             </div>
         </div>
     </div>

@@ -4,24 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quên mật khẩu</title>
+    <title>Forgot Password</title>
     <link rel="stylesheet" href="{{ asset('assets/css/account/resetPassword.css') }}">
 
 </head>
 
 <body>
     <div class="container">
-        <h2>Quên Mật Khẩu</h2>
+        <h2>Forgot Password</h2>
         @if (session('status'))
         <p class="success-message">{{ session('status') }}</p>
         @endif
         <form method="POST" action="{{ route('password.email') }}">
             @csrf
-            <label for="email">Nhập Email của bạn:</label>
+            <label for="email">Enter your Email:</label>
             <input type="email" name="email" id="email" required>
-            <button type="submit">Gửi liên kết đặt lại mật khẩu</button>
+            <button type="submit">Send password reset link</button>
         </form>
-        <a href="{{ route('login') }}" class="back-link">Quay lại đăng nhập</a>
+        <a href="{{ route('login') }}" class="back-link">Back to login</a>
     </div>
 </body>
 

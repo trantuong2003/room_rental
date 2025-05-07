@@ -50,4 +50,14 @@ class Subscription extends Model
             $this->update(['status' => 'expired']);
         }
     }
+
+    // Tăng số lượt đăng bài
+    public function incrementRemainingPosts()
+    {
+        $this->increment('remaining_posts');
+        // Đảm bảo trạng-thái được cập nhật thành active nếu cần
+        if ($this->status == 'expired' && $this->remaining_posts > 0 && $this->end_date >= now()) {
+            $this->update(['status' => 'active']);
+        }
+    }
 }

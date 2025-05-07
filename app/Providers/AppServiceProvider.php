@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Đặt trang mặc định khi truy cập '/'
-        Route::redirect('/', '/login');
+        Route::redirect('/', '/customer');
     }
 }

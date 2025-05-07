@@ -1,0 +1,166 @@
+/* Account Management Styles */
+.admin-account-container {
+    width: 100%;
+  }
+  
+  .admin-account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .admin-account-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  
+  .admin-account-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .admin-account-filter .filter-btn {
+    padding: 8px 16px;
+    border-radius: 36px;
+    background: var(--light);
+    color: var(--dark);
+    border: 1px solid var(--grey);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .admin-account-filter .filter-btn.active {
+    background: var(--blue);
+    color: var(--light);
+    border-color: var(--blue);
+  }
+  
+  .admin-account-filter .filter-btn:hover:not(.active) {
+    background: var(--grey);
+  }
+  
+  .admin-account-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .admin-account-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--dark);
+    border-bottom: 1px solid var(--grey);
+    white-space: nowrap;
+  }
+  
+  .admin-account-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--grey);
+  }
+  
+  .admin-account-table tbody tr:hover {
+    background: var(--grey);
+  }
+  
+  .admin-account-table .verified {
+    color: var(--blue);
+    font-weight: 500;
+  }
+  
+  .admin-account-table .not-verified {
+    color: var(--orange);
+    font-weight: 500;
+  }
+  
+  .admin-account-table .view-proof {
+    color: var(--blue);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .admin-account-table .role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  
+  .admin-account-table .role-admin {
+    background: var(--light-blue);
+    color: var(--blue);
+  }
+  
+  .admin-account-table .role-landlord {
+    background: var(--light-yellow);
+    color: var(--yellow);
+  }
+  
+  .admin-account-table .role-customer {
+    background: var(--light-orange);
+    color: var(--orange);
+  }
+  
+  /* Modal for viewing proof documents */
+  .proof-modal {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .proof-modal-content {
+    background-color: var(--light);
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 70%;
+    max-width: 800px;
+  }
+  
+  .proof-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .proof-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+  }
+  
+  .proof-modal-close {
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--dark-grey);
+  }
+  
+  .proof-modal-body {
+    text-align: center;
+  }
+  
+  .proof-modal-body img {
+    max-width: 100%;
+    max-height: 500px;
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (max-width: 992px) {
+    .admin-account-table {
+      min-width: 800px;
+    }
+    
+    .admin-account-container {
+      overflow-x: auto;
+    }
+  }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title'); // Tiêu đề bài viết
             $table->text('content'); // Nội dung bài viết
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('rejection_reason')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamps();
         });

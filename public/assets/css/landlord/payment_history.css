@@ -1,53 +1,435 @@
+/* Payment History Styles */
 .payment-history {
-    background-color: #f3f4f6;
-    padding: 24px;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-}
-.payment-history .container {
-    max-width: 1200px;
+    width: 100%;
+    padding: 10px 0; /* Reduced padding */
+    grid-column: span 2; /* If the parent uses grid */
+    flex-basis: 100%; /* If the parent uses flex */
+  }
+  
+  .payment-history .container {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 15px; /* Reduced padding */
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
-    background-color: #ffffff;
-    padding: 24px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.payment-history h1 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 16px;
-}
-.payment-history .filters {
+    /* Set a reasonable max-height */
+    max-height: calc(100vh - 200px);
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-.payment-history .table-container {
-    overflow-x: auto;
-}
-.payment-history table {
+  }
+  
+  .payment-history h1 {
+    font-size: 1.3rem; /* Reduced font size */
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 12px; /* Reduced margin */
+    position: relative;
+    padding-bottom: 8px; /* Reduced padding */
+    display: flex;
+    align-items: center;
+  }
+  
+  .payment-history h1::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px; /* Reduced width */
+    height: 2px; /* Reduced height */
+    background: var(--primary);
+    border-radius: var(--radius);
+  }
+  
+  .payment-history h1 ion-icon {
+    margin-right: 8px;
+    font-size: 1.3rem; /* Reduced font size */
+    color: var(--primary);
+  }
+  
+  /* Filters section - more compact */
+  .payment-history .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Reduced gap */
+    margin-bottom: 15px; /* Reduced margin */
+    padding: 10px; /* Reduced padding */
+    background-color: var(--gray-50);
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    align-items: center;
+  }
+  
+  .payment-history .filters .date-range {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* Reduced gap */
+    align-items: center;
+    flex: 1;
+  }
+  
+  .payment-history .filters .date-range label {
+    font-weight: 500;
+    color: var(--gray-700);
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters .date-range label ion-icon {
+    margin-right: 4px;
+    color: var(--primary);
+    font-size: 0.9rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters input[type="date"] {
+    padding: 6px 10px; /* Reduced padding */
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-size: 0.85rem; /* Reduced font size */
+    background-color: var(--white);
+    color: var(--gray-800);
+    transition: var(--transition);
+    height: 32px; /* Fixed height */
+  }
+  
+  .payment-history .filters input[type="date"]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
+  }
+  
+  .payment-history .filters .search-box {
+    position: relative;
+    flex: 1;
+    min-width: 180px; /* Reduced min-width */
+  }
+  
+  .payment-history .filters .search-box input {
     width: 100%;
+    padding: 6px 10px 6px 30px; /* Reduced padding */
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    outline: none;
+    font-size: 0.85rem; /* Reduced font size */
+    background-color: var(--white);
+    color: var(--gray-800);
+    transition: var(--transition);
+    height: 32px; /* Fixed height */
+  }
+  
+  .payment-history .filters .search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15);
+  }
+  
+  .payment-history .filters .search-box ion-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-500);
+    font-size: 1rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters .buttons {
+    display: flex;
+    gap: 8px; /* Reduced gap */
+  }
+  
+  .payment-history .filters .filter-button {
+    padding: 6px 12px; /* Reduced padding */
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Reduced gap */
+    transition: var(--transition);
+    height: 32px; /* Fixed height */
+    font-size: 0.85rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters .filter-button:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .payment-history .filters .filter-button ion-icon {
+    font-size: 0.9rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters .reset-button {
+    padding: 6px 12px; /* Reduced padding */
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 4px; /* Reduced gap */
+    transition: var(--transition);
+    height: 32px; /* Fixed height */
+    font-size: 0.85rem; /* Reduced font size */
+  }
+  
+  .payment-history .filters .reset-button:hover {
+    background-color: var(--gray-300);
+  }
+  
+  /* Table styles */
+  .payment-history .table-container {
+    overflow-x: auto;
+    overflow-y: auto; /* Allow vertical scrolling */
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    margin: 0 auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    /* Set a reasonable height */
+    flex: 1;
+    min-height: 200px;
+    max-height: calc(100vh - 300px);
+  }
+  
+  /* Style scrollbars for better appearance */
+  .payment-history .table-container::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  
+  .payment-history .table-container::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 3px;
+  }
+  
+  .payment-history .table-container::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 3px;
+  }
+  
+  .payment-history .table-container::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+  }
+  
+  .payment-history table {
+    width: 100%;
+    min-width: 800px; /* Ensure table has a minimum width */
     border-collapse: collapse;
-    background-color: #ffffff;
-}
-.payment-history th, .payment-history td {
-    padding: 16px;
+    background-color: var(--white);
+    border: 1px solid var(--gray-200);
+    table-layout: auto; /* Changed from fixed to auto for better content handling */
+  }
+  
+  .payment-history th {
+    background-color: var(--gray-100);
+    color: var(--gray-800);
+    font-weight: 600;
+    padding: 10px; /* Reduced padding */
     text-align: left;
-    border-bottom: 1px solid #e5e7eb;
-}
-.payment-history th {
-    background-color: #f9fafb;
-}
-@media (min-width: 768px) {
+    border-bottom: 2px solid var(--gray-300);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap; /* Prevent header text from wrapping */
+    font-size: 0.9rem; /* Reduced font size */
+  }
+  
+  /* Set column widths */
+  .payment-history th:nth-child(1) {
+    width: 22%;
+  }
+  
+  .payment-history th:nth-child(2) {
+    width: 18%;
+  }
+  
+  .payment-history th:nth-child(3) {
+    width: 25%;
+  }
+  
+  .payment-history th:nth-child(4) {
+    width: 20%;
+  }
+  
+  .payment-history th:nth-child(5) {
+    width: 15%;
+  }
+  
+  .payment-history td {
+    padding: 8px 10px; /* Reduced padding */
+    border-bottom: 1px solid var(--gray-200);
+    color: var(--gray-700);
+    transition: var(--transition);
+    font-size: 0.9rem; /* Reduced font size */
+  }
+  
+  /* Ensure transaction time doesn't wrap awkwardly */
+  .payment-history td:first-child {
+    white-space: nowrap;
+  }
+  
+  /* Ensure amount is right-aligned */
+  .payment-history td:nth-child(4) {
+    text-align: right;
+  }
+  
+  .payment-history tbody tr:hover {
+    background-color: var(--gray-50);
+  }
+  
+  .payment-history tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Status badges */
+  .payment-history .status {
+    padding: 3px 8px; /* Reduced padding */
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem; /* Reduced font size */
+    font-weight: 500;
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  .payment-history .status.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+  }
+  
+  .payment-history .status.pending {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+  }
+  
+  .payment-history .status.failed {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+  }
+  
+  .payment-history .status.processing {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: var(--info);
+  }
+  
+  /* Empty state */
+  .payment-history .empty-state {
+    text-align: center;
+    padding: 30px 20px; /* Reduced padding */
+    color: var(--gray-500);
+  }
+  
+  .payment-history .empty-state ion-icon {
+    font-size: 2.5rem; /* Reduced font size */
+    margin-bottom: 10px; /* Reduced margin */
+  }
+  
+  .payment-history .empty-state p {
+    font-size: 1rem; /* Reduced font size */
+    margin-bottom: 15px; /* Reduced margin */
+  }
+  
+  /* Pagination */
+  .payment-history .pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px; /* Reduced margin */
+    gap: 4px; /* Reduced gap */
+  }
+  
+  .payment-history .pagination button {
+    padding: 6px 10px; /* Reduced padding */
+    background-color: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-sm);
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.85rem; /* Reduced font size */
+  }
+  
+  .payment-history .pagination button:hover {
+    background-color: var(--gray-100);
+  }
+  
+  .payment-history .pagination button.active {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+  }
+  
+  .payment-history .pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 991px) {
     .payment-history .filters {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .payment-history .filters input,
-    .payment-history .filters select {
-        margin-bottom: 0;
+  
+    .payment-history .filters .date-range,
+    .payment-history .filters .search-box {
+      width: 100%;
     }
-}
+  
+    .payment-history .filters .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      width: 100%;
+    }
+  
+    .payment-history .filters .filter-button,
+    .payment-history .filters .reset-button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .payment-history .container {
+      padding: 12px;
+    }
+  
+    .payment-history h1 {
+      font-size: 1.2rem;
+    }
+  
+    .payment-history th,
+    .payment-history td {
+      padding: 8px;
+      font-size: 0.85rem;
+    }
+  
+    .payment-history .status {
+      padding: 3px 6px;
+      font-size: 0.75rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .payment-history .filters {
+      padding: 8px;
+    }
+  
+    .payment-history th,
+    .payment-history td {
+      padding: 6px;
+      font-size: 0.8rem;
+    }
+  
+    .payment-history .date-range {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }

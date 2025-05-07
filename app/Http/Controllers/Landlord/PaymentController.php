@@ -89,41 +89,6 @@ class PaymentController extends Controller
         return redirect()->away($vnp_Url);
     }
 
-    // public function vnpay_return(Request $request)
-    // {
-    //     $vnp_HashSecret = "241ZOFQ46R88O0TWLIA3TC9U9YH1WEXK"; // Chuỗi bí mật
-    //     $inputData = $request->all();
-
-    //     $txn_ref = $request->input('vnp_TxnRef');
-    //     $vnp_SecureHash = $request->input('vnp_SecureHash');
-
-    //     // Kiểm tra giao dịch có tồn tại không
-    //     $payment = Payment::where('txn_ref', $txn_ref)->first();
-    //     if (!$payment) {
-    //         return redirect('/landlord/subscription')->with('error', 'Transaction not found.');
-    //     }
-
-    //     // Xác thực chữ ký từ VNPay
-    //     unset($inputData['vnp_SecureHash']);
-    //     ksort($inputData);
-    //     $hashData = urldecode(http_build_query($inputData));
-    //     $secureHashCheck = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-
-    //     if ($vnp_SecureHash !== $secureHashCheck) {
-    //         return redirect('/landlord/subscription')->with('error', 'Invalid signature.');
-    //     }
-
-    //     // Cập nhật trạng thái thanh toán
-    //     $status = $request->input('vnp_ResponseCode') == "00" ? 'completed' : 'failed';
-    //     $payment->update(['status' => $status]);
-
-    //     // Chuyển hướng với thông báo phù hợp
-    //     if ($status == 'completed') {
-    //         return redirect('/landlord')->with('success', 'Payment successful!');
-    //     } else {
-    //         return redirect('/landlord/subscription')->with('error', 'Payment failed.');
-    //     }
-    // }
     public function vnpay_return(Request $request)
     {
         $vnp_HashSecret = "241ZOFQ46R88O0TWLIA3TC9U9YH1WEXK"; // Chuỗi bí mật
@@ -150,15 +115,7 @@ class PaymentController extends Controller
         }
         $hashData = rtrim($hashData, "&");
 
-        // Log dữ liệu để debug
-        Log::info('Input Data: ', $inputData);
-        Log::info('Hash Data: ', [$hashData]);
-
         $secureHashCheck = hash_hmac('sha512', $hashData, $vnp_HashSecret);
-
-        // Log chữ ký để debug
-        Log::info('Secure Hash Check: ', [$secureHashCheck]);
-        Log::info('VNPay Secure Hash: ', [$vnp_SecureHash]);
 
         if ($vnp_SecureHash !== $secureHashCheck) {
             return redirect('/landlord/subscription')->with('error', 'Invalid signature.');

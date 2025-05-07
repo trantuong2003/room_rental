@@ -5,20 +5,17 @@
     <div class="post">
         <div class="post_container">
             <div class="title">
-                <h1>Danh Sách Bài Đăng</h1>
+                <h1>List of Posts</h1>
                 @if (auth()->user()->subscriptions()->active()->exists())
                 <div class="create_post">
-                    <a href="{{ route('landlord.posts.create') }}" class="btn btn-primary mb-3">Tạo Bài Đăng Mới</a>
+                    <a href="{{ route('landlord.posts.create') }}" class="btn btn-primary mb-3">Create New Post</a>
                 </div>
                 @else
                 <div class="alert alert-warning">
-                    Bạn cần mua gói đăng ký để có thể đăng bài.
-                    <a href="{{ route('landlord.package') }}" class="btn btn-warning">Mua gói ngay</a>
+                    You need to purchase a subscription package to post.
+                    <a href="{{ route('landlord.package') }}" class="btn btn-warning">Buy Package Now</a>
                 </div>
                 @endif
-                <div>
-                    so bai dang con lai: {{ $remainingPosts }}
-                </div>
             </div>
 
             @if (session('success'))
@@ -37,14 +34,14 @@
             <div class="listing">
                 <div class="images">
                     @if ($post->images->isNotEmpty())
-                    <img src="{{ asset('storage/' . $post->images->first()->image_path) }}" alt="Hình ảnh chính">
+                    <img src="{{ asset('storage/' . $post->images->first()->image_path) }}" alt="Main Image">
                     <div class="grid">
                         @foreach ($post->images->slice(1, 3) as $image)
-                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Hình ảnh bổ sung">
+                        <img src="{{ asset('storage/' . $image->image_path) }}" alt="Additional Image">
                         @endforeach
                     </div>
                     @else
-                    <img src="https://placehold.co/300x200" alt="Không có ảnh">
+                    <img src="https://placehold.co/300x200" alt="No Image">
                     @endif
                 </div>
                 <div class="details">
@@ -64,18 +61,18 @@
                         <div class="profile">
                             <img src="https://placehold.co/40x40" alt="Profile">
                             <div>
-                                <p>{{ $post->user->name ?? 'Chủ nhà' }}</p>
+                                <p>{{ $post->user->name ?? 'Landlord' }}</p>
                             </div>
                         </div>
                         <div class="actions">
                             <button>
-                                <i class="fas fa-phone-alt"></i> {{ $post->user->phone ?? 'Ẩn số' }}
+                                <i class="fas fa-phone-alt"></i> {{ $post->user->phone ?? 'Hidden' }}
                             </button>
                             <a href="{{ route('landlord.posts.detail', ['id' => $post->id]) }}" class="btn btn-primary">
-                                Chi tiết
+                                Details
                             </a>
                             <a href="{{ route('landlord.posts.edit', $post->id) }}" class="btn btn-warning">
-                                Sửa
+                                Edit
                             </a>
                             <form action="{{ route('landlord.posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
                                 @csrf
