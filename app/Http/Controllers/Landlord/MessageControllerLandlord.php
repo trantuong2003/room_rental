@@ -88,6 +88,6 @@ class MessageControllerLandlord extends Controller
         ]);
 
         return redirect()->route('landlord.chat.user', ['userId' => $request->receiver_id])
-            ->with('success', 'Tin nhắn đã được gửi!');
+            ->with('success', 'Message sent!');
     }
 }

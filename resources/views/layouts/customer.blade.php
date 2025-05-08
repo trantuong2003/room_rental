@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="{{ asset('assets/css/customer/listpost.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/customer/historypost.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/customer/message.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/create_post.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/editpost.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/customer/favoritemore.css') }}">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <script src="{{ asset('assets/js/customer.js') }}"></script>
@@ -36,7 +39,7 @@
       </div>
       <div class="navbar-right">
         @auth
-        <a href="/customer/posts/favorites">Favorites</a>
+        <a href="/customer/favorites">Favorites</a>
         <i class="fas fa-heart icon"></i>
         <div class="button">
           <a href="/customer/post/roommates/create">Create Post</a>

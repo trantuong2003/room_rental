@@ -93,10 +93,10 @@ class ListPostCustomerController extends Controller
 
         // Nếu tìm thấy từ cấm, trả về lỗi và KHÔNG lưu vào database
         if (!empty($foundBannedWords)) {
-            session()->flash('error', 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords));
+            session()->flash('error', 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords));
 
             return redirect()->back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('failed_post_id', $postId);
         }
@@ -112,7 +112,7 @@ class ListPostCustomerController extends Controller
         $comment->parent_id = $request->parent_id;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Bình luận đã được gửi thành công!');
+        return redirect()->back()->with('success', 'Comment sent successfully!');
     }
     private function checkForBannedWords($content, $bannedWords)
     {
@@ -150,7 +150,7 @@ class ListPostCustomerController extends Controller
         // Nếu tìm thấy từ cấm, KHÔNG update comment
         if (!empty($foundBannedWords)) {
             return redirect()->back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('comment_id', $commentId);
         }
@@ -163,6 +163,6 @@ class ListPostCustomerController extends Controller
         $comment->content = $request->content;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Bình luận đã được cập nhật thành công!');
+        return redirect()->back()->with('success', 'Comment updated successfully!');
     }
 }

@@ -2,7 +2,7 @@
 @extends('layouts/customer')
 
 @section('content')
-<div class="container">
+<div class="container_create_post">
     <div class="card layout">
         <div class="left-section">
             <h1 class="header">Post to find a roommate</h1>

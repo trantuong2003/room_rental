@@ -49,7 +49,7 @@ class SubscriptionsController extends Controller
 
         // var_dump($remainingPosts);
 
-        $message = $remainingPosts > 0 ? null : 'Bạn không có gói đăng ký hoặc gói đăng ký đã hết hạn.';
+        $message = $remainingPosts > 0 ? null : 'You do not have a subscription or your subscription has expired.';
 
         return view('landord.test', compact('remainingPosts', 'message'));
     }

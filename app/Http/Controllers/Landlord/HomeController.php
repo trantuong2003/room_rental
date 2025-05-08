@@ -66,7 +66,7 @@ class HomeController extends Controller
             ->take(5)
             ->get();
 
-        $message = $remainingPosts > 0 ? null : 'Bạn không có gói đăng ký hoặc gói đăng ký đã hết hạn.';
+        $message = $remainingPosts > 0 ? null : 'You dont have a subscription or your subscription has expired.';
 
         return view('landord.home', compact(
             'remainingPosts',

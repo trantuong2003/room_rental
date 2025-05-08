@@ -37,11 +37,7 @@ use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Customer\FavoriteCustomerPost;
 use App\Http\Controllers\Customer\CommentCustomerPost;
-
-
-
-
-
+use App\Models\Favorite;
 
 // Route::get('/messagecustomer', function () {
 //     return view('customer/message');
@@ -75,9 +71,11 @@ Route::prefix('customer')->group(function () {
 
 Route::middleware(['auth.customer', 'verified'])->group(function () {
     Route::prefix('customer')->group(function () {
-        Route::get('/nearby-posts', [HomeCustomerController::class, 'nearbyPosts'])->name('customer.post.nearby');
+    // Route::get('/', [HomeCustomerController::class, 'home'])->name('customer.home');
+
+        // Route::get('/nearby-posts', [HomeCustomerController::class, 'nearbyPosts'])->name('customer.post.nearby');
         //post rental room
-        Route::prefix('posts')->group(function () {
+        Route::prefix('posts')->group(function () { 
 
             Route::post('/toggle-favorite-home', [HomeCustomerController::class, 'toggleFavorite'])->name('customer.post.toggleFavorite');
             Route::post('/toggle-favorite-detail', [DetailPostController::class, 'toggleFavorite'])->name('customer.detail.toggleFavorite');
@@ -94,10 +92,10 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
 
 
             // Route cho trang favourite
-            Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
-            Route::post('/toggle-favorite', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
-            Route::post('/{post}/comments/store', [FavoritePostController::class, 'storeComment'])->name('customer.favorite.comments.store');
-            Route::put('/comments/{comment}/update', [FavoritePostController::class, 'updateComment'])->name('customer.favorite.comments.update');
+            // Route::get('/favorites', [FavoritePostController::class, 'showFavorites'])->name('customer.favorites');
+            // Route::post('/toggle-favorite', [FavoritePostController::class, 'toggleFavorite'])->name('customer.favorite.toggleFavorite');
+            // Route::post('/{post}/comments/store', [FavoritePostController::class, 'storeComment'])->name('customer.favorite.comments.store');
+            // Route::put('/comments/{comment}/update', [FavoritePostController::class, 'updateComment'])->name('customer.favorite.comments.update');
         });
 
         //post find roommate
@@ -145,6 +143,20 @@ Route::middleware(['auth.customer', 'verified'])->group(function () {
             ->name('customer.post.comments.store');
         Route::put('/comments/{comment}/customer-post', [ListPostCustomerController::class, 'updateComment'])
             ->name('customer.post.comments.update');
+
+
+        //route trang favorite
+        Route::prefix('favorites')->group(function () {
+            Route::get('/', [FavoritePostController::class, 'showFavorites'])->where('filter', 'landlord|customer')->name('customer.favorites');
+            Route::post('/toggle-favorite', [FavoritePostController::class, 'toggleFavorite'])
+                ->name('customer.favorites.toggleFavorite');
+            Route::post('/toggle-like', [FavoritePostController::class, 'toggleLike'])
+                ->name('customer.favorites.toggleLike');
+            Route::post('/{post}/comments', [FavoritePostController::class, 'storeComment'])
+                ->name('customer.favorites.comments.store');
+            Route::put('/comments/{comment}', [FavoritePostController::class, 'updateComment'])
+                ->name('customer.favorites.comments.update');
+        });
     });
 });
 
@@ -267,15 +279,15 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 //router kiểm tra đã verify tài khoản chưa
 // Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::get('/', function () {
+//     Route::get('/customer', function () {
 //         return view('customer.home');
 //     });
 
-//     Route::middleware('auth.landlord')->group(function () {
-//         Route::get('/landlord', function () {
-//             return view('landord.home');
-//         });
-//     });
+//     // Route::middleware('auth.landlord')->group(function () {
+//         // Route::get('/landlord', function () {
+//         //     return view('landord.home');
+//         // });
+//     // });
 // });
 
 

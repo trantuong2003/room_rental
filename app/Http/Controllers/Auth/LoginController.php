@@ -20,11 +20,6 @@ class LoginController extends Controller
         $status = Auth::attempt(['email' => $email, 'password' => $password]);
         if ($status) {
             $user = Auth::user();
-            // if (!$user->hasVerifiedEmail() && $user->role !== 'admin') {
-            //     Auth::logout(); // Đăng xuất người dùng nếu chưa xác thực email
-            //     return back()->with('msg', 'Vui lòng xác thực email trước khi đăng nhập.');
-            // }
-            // $urlRedirect = "/";
             if ($user->role === 'admin') {
                 $urlRedirect = "/admin";
             } elseif ($user->role === 'landlord') {
@@ -34,7 +29,7 @@ class LoginController extends Controller
             }
             return redirect($urlRedirect);
         }
-        return back()->with('msg', 'Email hoặc mật khẩu không chính xác');
+        return back()->with('msg', 'Email or password is incorrect');
     }
 
     public function logout(Request $request)

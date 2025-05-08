@@ -16,7 +16,7 @@ class EnsureEmailIsVerified
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user() || !$request->user()->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice')->with('error', 'Bạn cần xác minh email trước khi tiếp tục.');
+            return redirect()->route('verification.notice')->with('error', 'You need to verify your email before continuing.');
         }
 
         return $next($request);

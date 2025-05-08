@@ -13,6 +13,7 @@ class HomeCustomerController extends Controller
 {
     public function home(Request $request)
     {
+
         $query = LandlordPost::with('images', 'user')
             ->where('status', 'approved');
 
@@ -24,10 +25,10 @@ class HomeCustomerController extends Controller
             });
         }
 
-        // Lọc theo loại nhà đất (nếu có cột property_type)
-        if ($propertyType = $request->query('property_type')) {
-            $query->where('property_type', $propertyType);
-        }
+        // // Lọc theo loại nhà đất (nếu có cột property_type)
+        // if ($propertyType = $request->query('property_type')) {
+        //     $query->where('property_type', $propertyType);
+        // }
 
         // Lọc theo khu vực
         if ($area = $request->query('area')) {
@@ -67,7 +68,7 @@ class HomeCustomerController extends Controller
     {
         // Kiểm tra đăng nhập
         if (!Auth::check()) {
-            return response()->json(['status' => 'error', 'message' => 'Vui lòng đăng nhập để thêm vào danh sách yêu thích'], 401);
+            return response()->json(['status' => 'error', 'message' => 'Please, login to add to your list'], 401);
         }
 
         $request->validate([

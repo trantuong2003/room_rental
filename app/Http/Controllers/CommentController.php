@@ -71,7 +71,7 @@ class CommentController extends Controller
         // Nếu tìm thấy từ cấm, không lưu comment
         if (!empty($foundBannedWords)) {
             return back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'ontent contains inappropriate words: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('failed_post_id', $postId);
         }
@@ -86,11 +86,11 @@ class CommentController extends Controller
         // Kiểm tra quyền bình luận
         if ($user->role === 'landlord') {
             if (!$request->parent_id && $post->user_id === $user->id) {
-                return back()->with('error', 'Bạn không thể bình luận vào bài viết của chính mình.');
+                return back()->with('error', 'You cannot comment on your own posts.');
             }
 
             if ($parentComment && $parentComment->user->role !== 'customer') {
-                return back()->with('error', 'Bạn chỉ có thể trả lời bình luận của người thuê.');
+                return back()->with('error', 'You can only reply to comments from tenants.');
             }
         }
 
@@ -102,7 +102,7 @@ class CommentController extends Controller
 
         $post->comments()->save($comment);
 
-        return back()->with('success', 'Bình luận đã được thêm thành công.');
+        return back()->with('success', 'Comment added successfully.');
     }
 
     public function update(Request $request, $commentId)
@@ -127,7 +127,7 @@ class CommentController extends Controller
         // Nếu tìm thấy từ cấm, không update comment
         if (!empty($foundBannedWords)) {
             return back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'Content contains inappropriate words: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('comment_id', $commentId);
         }
@@ -136,11 +136,11 @@ class CommentController extends Controller
         $user = Auth::user();
 
         if ($comment->user_id !== $user->id) {
-            return back()->with('error', 'Bạn không có quyền sửa bình luận này.');
+            return back()->with('error', 'You do not have permission to edit this comment.');
         }
 
         $comment->update(['content' => $request->content]);
 
-        return back()->with('success', 'Bình luận đã được cập nhật.');
+        return back()->with('success', 'Comment updated.');
     }
 }

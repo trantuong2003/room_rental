@@ -72,13 +72,13 @@ class RegisterController extends Controller
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Đăng ký thành công! Vui lòng kiểm tra email để xác nhận.',
+                    'message' => 'success', 'Register success! Please check email.',
                     'redirect' => '/email/verify',
                 ]);
             }
 
             // Chuyển hướng về trang xác minh email
-            return redirect('/email/verify')->with('success', 'Đăng ký thành công! Vui lòng kiểm tra email.');
+            return redirect('/email/verify')->with('success', 'Register success! Please check email.');
         } catch (\Exception $e) {
             Log::error('Lỗi khi đăng ký người dùng: ' . $e->getMessage());
             return response()->json([

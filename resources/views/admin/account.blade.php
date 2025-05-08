@@ -62,7 +62,7 @@
                         <td>{{ $user->government_id ?? 'Not updated yet' }}</td>
                         <td>
                             @if($user->proof)
-                                <span class="view-proof" onclick="showProof('{{ asset('storage/' . $user->proof) }}', '{{ $user->name }}')">Xem giấy tờ</span>
+                                <span class="view-proof" onclick="showProof('{{ asset('storage/' . $user->proof) }}', '{{ $user->name }}')">Watch the paper</span>
                             @else
                             Not updated yet
                             @endif

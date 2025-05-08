@@ -36,7 +36,7 @@
                                 'Nghệ An', 'Ninh Bình', 'Ninh Thuận', 'Phú Thọ', 'Phú Yên', 'Quảng Bình', 
                                 'Quảng Nam', 'Quảng Ngãi', 'Quảng Ninh', 'Quảng Trị', 'Sóc Trăng', 'Sơn La', 
                                 'Tây Ninh', 'Thái Bình', 'Thái Nguyên', 'Thanh Hóa', 'Thừa Thiên Huế', 'Tiền Giang', 
-                                'TP Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
+                                'Hồ Chí Minh', 'Trà Vinh', 'Tuyên Quang', 'Vĩnh Long', 'Vĩnh Phúc', 'Yên Bái'
                             ];
                         @endphp
                         @foreach($cities as $city)
@@ -53,10 +53,10 @@
                 <div class="option">
                     <select name="price_range" onchange="this.form.submit()">
                         <option value="">All</option>
-                        <option value="0-5" {{ request('price_range') == '0-5' ? 'selected' : '' }}>Under 5 million</option>
-                        <option value="5-10" {{ request('price_range') == '5-10' ? 'selected' : '' }}>5 - 10 million</option>
-                        <option value="10-20" {{ request('price_range') == '10-20' ? 'selected' : '' }}>10 - 20 million</option>
-                        <option value="20-999999" {{ request('price_range') == '20-999999' ? 'selected' : '' }}>Over 20 million</option>
+                        <option value="0-2" {{ request('price_range') == '0-2' ? 'selected' : '' }}>Under 2 million</option>
+                        <option value="2-3" {{ request('price_range') == '2-3' ? 'selected' : '' }}>2 - 3 million</option>
+                        <option value="3-4" {{ request('price_range') == '3-4' ? 'selected' : '' }}>3 - 4 million</option>
+                        <option value="4-999999" {{ request('price_range') == '4-999999' ? 'selected' : '' }}>Over 4 million</option>
                     </select>
                 </div>
             </div>
@@ -68,10 +68,10 @@
                 <div class="option">
                     <select name="acreage_range" onchange="this.form.submit()">
                         <option value="">All</option>
-                        <option value="0-50" {{ request('acreage_range') == '0-50' ? 'selected' : '' }}>Under 50 m²</option>
-                        <option value="50-100" {{ request('acreage_range') == '50-100' ? 'selected' : '' }}>50 - 100 m²</option>
-                        <option value="100-200" {{ request('acreage_range') == '100-200' ? 'selected' : '' }}>100 - 200 m²</option>
-                        <option value="200-999999" {{ request('acreage_range') == '200-999999' ? 'selected' : '' }}>Over 200 m²</option>
+                        <option value="0-20" {{ request('acreage_range') == '0-20' ? 'selected' : '' }}>Under 20 m²</option>
+                        <option value="20-30" {{ request('acreage_range') == '20-30' ? 'selected' : '' }}>20 - 30 m²</option>
+                        <option value="30-40" {{ request('acreage_range') == '30-40' ? 'selected' : '' }}>30 - 40 m²</option>
+                        <option value="40-999999" {{ request('acreage_range') == '40-999999' ? 'selected' : '' }}>Over 40 m²</option>
                     </select>
                 </div>
             </div>

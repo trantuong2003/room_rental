@@ -1,0 +1,144 @@
+.filter-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 5px;
+    background-color: #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 20px;
+    z-index: 10;
+}
+
+.filter-tab {
+    flex: 1;
+    padding: 12px 20px;
+    border-radius: 8px;
+    background-color: transparent;
+    text-decoration: none;
+    color: #4b5563;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.filter-tab[href*="filter=landlord"]::before {
+    content: "\f015";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.filter-tab[href*="filter=customer"]::before {
+    content: "\f007";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+.filter-tab:hover {
+    background-color: #cbd5e0;
+    color: #1f2937;
+    transform: translateY(-2px);
+}
+
+.filter-tab.active {
+    background-color: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.filter-tab::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: #3b82f6;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.filter-tab:hover::after {
+    width: 80%;
+}
+
+.filter-tab.active::after {
+    width: 90%;
+    background-color: white;
+}
+
+.filter-tab .count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background-color: #e5e7eb;
+    color: #4b5563;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 5px;
+}
+
+.filter-tab.active .count-badge {
+    background-color: white;
+    color: #3b82f6;
+}
+
+@media (max-width: 768px) {
+    .filter-tabs {
+        position: sticky;
+        top: 10px;
+        padding: 3px;
+        gap: 8px;
+    }
+
+    .filter-tab {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-tab::before {
+        font-size: 16px;
+    }
+
+    .filter-tab span {
+        display: none;
+    }
+
+    .filter-tab .count-badge {
+        margin-left: 0;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .filter-tabs {
+        background-color: #2d3748;
+    }
+
+    .filter-tab {
+        color: #e2e8f0;
+    }
+
+    .filter-tab:hover {
+        background-color: #4a5568;
+        color: white;
+    }
+
+    .filter-tab .count-badge {
+        background-color: #4a5568;
+        color: #e2e8f0;
+    }
+}
+

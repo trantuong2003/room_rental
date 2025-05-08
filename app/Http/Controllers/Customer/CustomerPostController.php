@@ -52,7 +52,7 @@ class CustomerPostController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect()->route('customer.roommates.history')->with('success', 'Bài đăng đã được tạo thành công!');
+        return redirect()->route('customer.roommates.history')->with('success', 'Create post success!');
     }
 
     // Hiển thị form chỉnh sửa bài đăng
@@ -62,7 +62,7 @@ class CustomerPostController extends Controller
 
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('customer.roommates.history')
-                ->with('error', 'Bạn không có quyền chỉnh sửa bài đăng này');
+                ->with('error', 'You dont edit this post');
         }
 
         return view('customer.editpost_customer', compact('post'));
@@ -73,7 +73,7 @@ class CustomerPostController extends Controller
     {
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('customer.roommates.history')
-                ->with('error', 'Bạn không có quyền chỉnh sửa bài đăng này');
+                ->with('error', 'You dont edit this post');
         }
 
         $request->validate([
@@ -87,7 +87,7 @@ class CustomerPostController extends Controller
         ]);
 
         return redirect()->route('customer.roommates.history')
-            ->with('success', 'Bài đăng đã được cập nhật thành công!');
+            ->with('success', 'Updated successfull!');
     }
 
     // Xóa bài đăng
@@ -103,7 +103,7 @@ class CustomerPostController extends Controller
         $post->delete();
 
         return redirect()->route('customer.roommates.history')
-            ->with('success', 'Bài đăng đã được cập nhật thành công!');
+            ->with('success', 'Deleted post success!');
     }
 
     // Xử lý like bài đăng (chỉ cho customer posts)
@@ -158,10 +158,10 @@ class CustomerPostController extends Controller
 
         // Nếu tìm thấy từ cấm, trả về lỗi và KHÔNG lưu vào database
         if (!empty($foundBannedWords)) {
-            session()->flash('error', 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords));
+            session()->flash('error', 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords));
 
             return redirect()->back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('failed_post_id', $postId);
         }
@@ -177,7 +177,7 @@ class CustomerPostController extends Controller
         $comment->parent_id = $request->parent_id;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Bình luận đã được gửi thành công!');
+        return redirect()->back()->with('success', 'Comment sent successfully!');
     }
     private function checkForBannedWords($content, $bannedWords)
     {
@@ -215,7 +215,7 @@ class CustomerPostController extends Controller
         // Nếu tìm thấy từ cấm, KHÔNG update comment
         if (!empty($foundBannedWords)) {
             return redirect()->back()
-                ->withErrors(['content' => 'Nội dung chứa từ ngữ không phù hợp: ' . implode(', ', $foundBannedWords)])
+                ->withErrors(['content' => 'Content contains inappropriate language: ' . implode(', ', $foundBannedWords)])
                 ->withInput()
                 ->with('comment_id', $commentId);
         }
@@ -228,6 +228,6 @@ class CustomerPostController extends Controller
         $comment->content = $request->content;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Bình luận đã được cập nhật thành công!');
+        return redirect()->back()->with('success', 'Comment sent successfully!');
     }
 }

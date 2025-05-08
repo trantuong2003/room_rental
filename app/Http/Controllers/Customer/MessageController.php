@@ -88,6 +88,6 @@ class MessageController extends Controller
         ]);
 
         return redirect()->route('customer.chat.user', ['userId' => $request->receiver_id])
-            ->with('success', 'Tin nhắn đã được gửi!');
+            ->with('success', 'Message sent!');
     }
 }

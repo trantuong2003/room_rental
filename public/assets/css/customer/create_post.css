@@ -1,0 +1,184 @@
+.container_create_post {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Card Layout */
+.container_create_post .card.layout {
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+/* Left Section (Form) */
+.container_create_post .left-section {
+  flex: 2;
+  padding: 2.5rem;
+  border-right: 1px solid #f0f0f0;
+}
+
+/* Right Section (Price Info) */
+.container_create_post .right-section {
+  flex: 1;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Typography */
+.container_create_post .header {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.container_create_post .sub-header {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+/* Form Styles */
+.container_create_post .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.container_create_post .form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.container_create_post .form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #111827;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.container_create_post .form-control:focus {
+  border-color: #4f46e5;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.container_create_post textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Button Styles */
+.container_create_post .submit-btn {
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  color: #ffffff;
+  background-color: #4f46e5;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-right: 1rem;
+}
+
+.container_create_post .submit-btn:hover {
+  background-color: #4338ca;
+  transform: translateY(-1px);
+}
+
+.container_create_post .btn-secondary {
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 6px;
+  color: #374151;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.container_create_post .btn-secondary:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+/* Price Info Section */
+.container_create_post .price-info {
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.container_create_post .price-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.container_create_post .price-info p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container_create_post .card.layout {
+      flex-direction: column;
+  }
+
+  .container_create_post .left-section {
+      border-right: none;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 1.5rem;
+  }
+
+  .container_create_post .right-section {
+      padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container_create_post .header {
+      font-size: 1.5rem;
+  }
+
+  .container_create_post .submit-btn,
+  .container_create_post .btn-secondary {
+      display: block;
+      width: 100%;
+      margin-right: 0;
+      margin-bottom: 0.75rem;
+  }
+}

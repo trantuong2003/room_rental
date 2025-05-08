@@ -300,8 +300,8 @@
         rejectButtons.forEach(button => {
             button.addEventListener('click', function() {
                 const postId = this.getAttribute('data-id');
-                confirmationTitle.textContent = 'Xác nhận từ chối';
-                confirmationMessage.textContent = 'Bạn có chắc chắn muốn từ chối bài đăng này?';
+                confirmationTitle.textContent = 'Confirm rejet';
+                confirmationMessage.textContent = 'Are you sure to reject?';
                 confirmationModal.style.display = 'block';
                 
                 confirmButton.onclick = function() {

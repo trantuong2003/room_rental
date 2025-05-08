@@ -58,7 +58,7 @@ class CreatePostController extends Controller
                 }
             }
 
-            return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng đã được tạo thành công!');
+            return redirect()->route('landlord.posts.index')->with('success', 'Created post successfull!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
@@ -105,7 +105,7 @@ class CreatePostController extends Controller
             }
         }
 
-        return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng đã được cập nhật thành công!');
+        return redirect()->route('landlord.posts.index')->with('success', 'Edited post successfull !');
     }
 
     public function deleteImages($postId)
@@ -137,6 +137,6 @@ class CreatePostController extends Controller
     
         $post->delete();
     
-        return redirect()->route('landlord.posts.index')->with('success', 'Bài đăng và các ảnh đã được xóa thành công!');
+        return redirect()->route('landlord.posts.index')->with('success', 'Edit successfull!');
     }
 }

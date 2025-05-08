@@ -1,8 +1,10 @@
 @extends('layouts.customer')
 
 @section('content')
+<div class="detail_landlordpost_customer">
+
 <div class="container">
-    <div class="card layout">
+    <div class="card_layout">
         <div class="left-section">
             <div class="image-container">
                 <!-- Main image -->
@@ -62,7 +64,7 @@
                     <i class="fas fa-share-alt share-btn" data-url="{{ url()->current() }}"
                         style="cursor: pointer;"></i>
                     <div class="favorite-btn" data-post-id="{{ $post->id }}" data-post-type="landlord"
-                        onclick="toggleFavorite(event)" style="cursor: pointer;">
+                        @auth onclick="toggleFavorite(event)"  @else onclick="showLoginAlert()" @endauth style="cursor: pointer;">
                         <i class="fas fa-heart" style="color: {{ $post->isFavorited ? 'red' : 'gray' }};"></i>
                     </div>
                 </div>
@@ -372,7 +374,7 @@
                 <div class="infor">
                     <h2>{{ $post->user->name }}</h2>
                     <div class="address">
-                        <div onclick="goToChat({{ $post->user->id }})">
+                        <div @auth onclick="goToChat({{ $post->user->id }})"  @else onclick="showLoginAlert()" @endauth>
                             <button class="zalo">Message now</button>
                         </div>
                         <button class="phone">Phone number: {{ $post->user->phone ?? 'Not updated' }}</button>
@@ -386,6 +388,8 @@
         </div>
     </div>
 </div>
+</div>
+
 
 <!-- Include Google Maps API -->
 @if ($post->latitude && $post->longitude)
@@ -403,6 +407,11 @@
             position: postLocation,
             map: map
         });
+    }
+
+        function showLoginAlert() {
+        alert("Please log in to perform this action!");
+        window.location.href = "{{ route('login') }}";
     }
     
     // Toggle favorite
